@@ -10,7 +10,7 @@ import javax.persistence.Id;
 @Entity
 public class Usuario {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String nome;
     private String email;
@@ -18,6 +18,26 @@ public class Usuario {
     private String cpf;
     private String telefone;
     private String cep;
+    private Integer idade;
+    public Usuario(String nome,
+                   String email,
+                   String senha,
+                   String cpf,
+                   String telefone,
+                   String cep,
+                   Integer idade) {
+        this.nome = nome;
+        this.email = email;
+        this.senha = senha;
+        this.cpf = cpf;
+        this.telefone = telefone;
+        this.cep = cep;
+        this.idade = idade;
+    }
+
+    public Usuario() {
+
+    }
 
     public Long getId() {
         return id;
@@ -73,5 +93,13 @@ public class Usuario {
 
     public void setCep(String cep) {
         this.cep = cep;
+    }
+
+    public Integer getIdade() {
+        return idade;
+    }
+
+    public void setIdade(Integer idade) {
+        this.idade = idade;
     }
 }
