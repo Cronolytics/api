@@ -1,43 +1,27 @@
 package com.cronolytics.api.entity;
 
-import org.springframework.web.bind.annotation.GetMapping;
+import com.cronolytics.api.utils.enums.StatusAccount;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 public class Usuario {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String img;
     private String nome;
     private String email;
     private String senha;
-    private String cpf;
     private String telefone;
+    private String cpf;
     private String cep;
-    private Integer idade;
-    public Usuario(String nome,
-                   String email,
-                   String senha,
-                   String cpf,
-                   String telefone,
-                   String cep,
-                   Integer idade) {
-        this.nome = nome;
-        this.email = email;
-        this.senha = senha;
-        this.cpf = cpf;
-        this.telefone = telefone;
-        this.cep = cep;
-        this.idade = idade;
-    }
+    private LocalDate nascimento;
+    private StatusAccount status = StatusAccount.PENDING;
 
-    public Usuario() {
 
-    }
+    public Usuario() {}
 
     public Long getId() {
         return id;
@@ -45,6 +29,14 @@ public class Usuario {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 
     public String getNome() {
@@ -95,11 +87,19 @@ public class Usuario {
         this.cep = cep;
     }
 
-    public Integer getIdade() {
-        return idade;
+    public LocalDate getNascimento() {
+        return nascimento;
     }
 
-    public void setIdade(Integer idade) {
-        this.idade = idade;
+    public void setNascimento(LocalDate nascimento) {
+        this.nascimento = nascimento;
+    }
+
+    public StatusAccount getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusAccount status) {
+        this.status = status;
     }
 }
