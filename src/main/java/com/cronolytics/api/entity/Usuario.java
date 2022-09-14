@@ -2,33 +2,29 @@ package com.cronolytics.api.entity;
 
 import com.cronolytics.api.utils.enums.StatusAccount;
 
-import javax.persistence.*;
-import java.time.LocalDate;
+import javax.persistence.MappedSuperclass;
 
-@Entity
-public class Usuario {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@MappedSuperclass
+public abstract class Usuario {
     private String img;
     private String nome;
-    private String email;
     private String senha;
-    private String telefone;
-    private String cpf;
+    private String email;
     private String cep;
-    private LocalDate nascimento;
-    private StatusAccount status = StatusAccount.PENDING;
+    private String telefone;
+    private StatusAccount status;
 
-
-    public Usuario() {}
-
-    public Long getId() {
-        return id;
+    public Usuario() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Usuario(String img, String nome, String senha, String email, String cep, String telefone) {
+        this.img = img;
+        this.nome = nome;
+        this.senha = senha;
+        this.email = email;
+        this.cep = cep;
+        this.telefone = telefone;
+        this.status = StatusAccount.PENDING;
     }
 
     public String getImg() {
@@ -47,14 +43,6 @@ public class Usuario {
         this.nome = nome;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getSenha() {
         return senha;
     }
@@ -63,20 +51,12 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public String getCpf() {
-        return cpf;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getCep() {
@@ -87,12 +67,12 @@ public class Usuario {
         this.cep = cep;
     }
 
-    public LocalDate getNascimento() {
-        return nascimento;
+    public String getTelefone() {
+        return telefone;
     }
 
-    public void setNascimento(LocalDate nascimento) {
-        this.nascimento = nascimento;
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
     public StatusAccount getStatus() {
