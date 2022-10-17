@@ -6,6 +6,7 @@ import com.cronolytics.api.dto.req.SendMailDTO;
 import com.cronolytics.api.entity.Respondente;
 import com.cronolytics.api.repository.IRespondenteRepository;
 import com.cronolytics.api.service.MailService;
+import com.cronolytics.api.utils.enums.ListaObj;
 import com.cronolytics.api.utils.enums.StatusAccount;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -24,6 +26,21 @@ public class RespondenteController {
 
     @Autowired
     MailService mailService;
+
+    @GetMapping
+    public ResponseEntity<ListaObj<Respondente>> listarTodos() {
+        List<Respondente> lista = respondenteRepository.findAll();
+
+        if (lista.isEmpty()) return ResponseEntity.status(204).build();
+
+        ListaObj<Respondente> listaObj = new ListaObj<Respondente>(lista.size());
+
+        for (Respondente r : lista) {
+            listaObj.adiciona(r);
+        }
+
+        return ResponseEntity.ok(listaObj);
+    }
 
     @PostMapping
     public ResponseEntity cadastro(@RequestBody CadastroRespondenteDTO payload) {
