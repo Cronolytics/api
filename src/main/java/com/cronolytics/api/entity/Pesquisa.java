@@ -14,7 +14,6 @@ public class Pesquisa {
     private Boolean exploratoria;
     private Boolean encerrada;
     private Integer participantesAlvo;
-    private Integer participantesTotais;
     @OneToMany
     private List<Pergunta> perguntas = new ArrayList<>();
 
@@ -65,15 +64,6 @@ public class Pesquisa {
     public void setParticipantesAlvo(Integer participantesAlvo) {
         this.participantesAlvo = participantesAlvo;
     }
-
-    public Integer getParticipantesTotais() {
-        return participantesTotais;
-    }
-
-    public void setParticipantesTotais(Integer participantesTotais) {
-        this.participantesTotais = participantesTotais;
-    }
-
     public List<Pergunta> getPerguntas() {
         return perguntas;
     }
