@@ -14,7 +14,7 @@ public class PesquisaSubject {
     private Integer respostasTotais;
 
 
-    PesquisaSubject(Pesquisa pesquisa){
+    public PesquisaSubject(Pesquisa pesquisa){
         this.pesquisa=pesquisa;
         this.empresas = new ArrayList<>();
         this.respondentes = new ArrayList<>();
@@ -45,5 +45,11 @@ public class PesquisaSubject {
         respondentes.clear();
     }
 
+    public Pesquisa getPesquisa() {
+        return pesquisa;
+    }
 
+    public void setPesquisa(Pesquisa pesquisa) {
+        this.pesquisa = pesquisa;
+    }
 }
