@@ -44,6 +44,10 @@ public class PesquisaService {
     }
 
     private boolean responderPesquisa(Gabarito gabarito,Integer idPesquisa){
+        for (PesquisaSubject subject: subjects
+        ) {
+            if (subject.getPesquisa().getId().equals(idPesquisa))
+        }
         return false;
     }
 }
