@@ -44,6 +44,6 @@ public class PesquisaService {
     }
 
     private boolean responderPesquisa(Gabarito gabarito,Integer idPesquisa){
-
+        return false;
     }
 }
