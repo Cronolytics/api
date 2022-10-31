@@ -1,5 +1,6 @@
 package com.cronolytics.api.controller;
 
+import com.cronolytics.api.entity.Gabarito;
 import com.cronolytics.api.entity.Pesquisa;
 import com.cronolytics.api.repository.IPesquisaRepository;
 import com.cronolytics.api.repository.IRespondenteRepository;
@@ -27,5 +28,10 @@ public class PesquisaController {
         return ResponseEntity.status(201).body(pesquisa);
     }
 
-
+    @PostMapping("/responder")
+    public ResponseEntity responder(@RequestBody Gabarito gabarito){
+        return service.responderPesquisa(gabarito) ?
+                ResponseEntity.status(201).body(gabarito) :
+                ResponseEntity.status(404).build();
+    }
 }

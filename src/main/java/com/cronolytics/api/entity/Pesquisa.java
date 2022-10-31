@@ -11,10 +11,11 @@ public class Pesquisa {
     private Integer id;
     private String nome;
     private String desc;
-    private Boolean exploratoria;
-    private Boolean encerrada;
+    private boolean exploratoria;
+    private boolean encerrada;
     private Integer participantesAlvo;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
+    @JoinColumn(name = "id_pesquisa")
     private List<Pergunta> perguntas = new ArrayList<>();
 
     public Integer getId() {
@@ -41,19 +42,19 @@ public class Pesquisa {
         this.desc = desc;
     }
 
-    public Boolean getExploratoria() {
+    public boolean getExploratoria() {
         return exploratoria;
     }
 
-    public void setExploratoria(Boolean exploratoria) {
+    public void setExploratoria(boolean exploratoria) {
         this.exploratoria = exploratoria;
     }
 
-    public Boolean getEncerrada() {
+    public boolean getEncerrada() {
         return encerrada;
     }
 
-    public void setEncerrada(Boolean encerrada) {
+    public void setEncerrada(boolean encerrada) {
         this.encerrada = encerrada;
     }
 

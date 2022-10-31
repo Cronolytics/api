@@ -40,9 +40,16 @@ public class PesquisaSubject {
             respondentes.add(novoRespondente);
         }
     }
-
+    public boolean adicionarRespostaEncerrar(){
+        respostasTotais++;
+        return respostasTotais == pesquisa.getParticipantesAlvo();
+    }
     public void removerTodos() {
         respondentes.clear();
+    }
+
+    public void removerTodosEmpresa(){
+        empresas.clear();
     }
 
     public Pesquisa getPesquisa() {
@@ -51,5 +58,13 @@ public class PesquisaSubject {
 
     public void setPesquisa(Pesquisa pesquisa) {
         this.pesquisa = pesquisa;
+    }
+
+    public Integer getRespostasTotais() {
+        return respostasTotais;
+    }
+
+    public void setRespostasTotais(Integer respostasTotais) {
+        this.respostasTotais = respostasTotais;
     }
 }

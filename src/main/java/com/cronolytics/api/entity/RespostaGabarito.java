@@ -11,8 +11,6 @@ public class RespostaGabarito {
     private Pergunta pergunta;
     @OneToOne
     private Resposta resposta;
-    @ManyToOne
-    private Gabarito gabarito;
     private String desc;
 
     public Integer getId() {
@@ -39,13 +37,6 @@ public class RespostaGabarito {
         this.resposta = resposta;
     }
 
-    public Gabarito getGabarito() {
-        return gabarito;
-    }
-
-    public void setGabarito(Gabarito gabarito) {
-        this.gabarito = gabarito;
-    }
 
     public String getDesc() {
         return desc;

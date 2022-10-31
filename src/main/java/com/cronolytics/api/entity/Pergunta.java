@@ -1,8 +1,8 @@
 package com.cronolytics.api.entity;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.*;
 
 @Entity
 public class Pergunta {
@@ -10,12 +10,11 @@ public class Pergunta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String desc;
-    @OneToOne
-    private Componente componente;
-    @OneToMany
-    private List<Resposta> respostas = new ArrayList<>();
     @ManyToOne
-    private Pesquisa pesquisa;
+    private Componente componente;
+    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
+    @JoinColumn(name = "id_pergunta")
+    private List<Resposta> respostas = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -47,13 +46,5 @@ public class Pergunta {
 
     public void setRespostas(List<Resposta> respostas) {
         this.respostas = respostas;
-    }
-
-    public Pesquisa getPesquisa() {
-        return pesquisa;
-    }
-
-    public void setPesquisa(Pesquisa pesquisa) {
-        this.pesquisa = pesquisa;
     }
 }
