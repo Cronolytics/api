@@ -13,6 +13,8 @@ public class RespostaGabarito {
     private Resposta resposta;
     private String desc;
 
+    private Integer rank;
+
     public Integer getId() {
         return id;
     }
@@ -37,12 +39,19 @@ public class RespostaGabarito {
         this.resposta = resposta;
     }
 
-
     public String getDesc() {
         return desc;
     }
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public Integer getRank() {
+        return rank;
+    }
+
+    public void setRank(Integer rank) {
+        this.rank = rank;
     }
 }
