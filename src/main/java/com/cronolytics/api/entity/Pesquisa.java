@@ -14,6 +14,9 @@ public class Pesquisa {
     private boolean exploratoria;
     private boolean encerrada;
     private Integer participantesAlvo;
+    private boolean interna;
+    @ManyToOne
+    private Empresa empresa;
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "id_pesquisa")
     private List<Pergunta> perguntas = new ArrayList<>();
@@ -71,5 +74,29 @@ public class Pesquisa {
 
     public void setPerguntas(List<Pergunta> perguntas) {
         this.perguntas = perguntas;
+    }
+
+    public boolean isExploratoria() {
+        return exploratoria;
+    }
+
+    public boolean isEncerrada() {
+        return encerrada;
+    }
+
+    public Empresa getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(Empresa empresa) {
+        this.empresa = empresa;
+    }
+
+    public boolean isInterna() {
+        return interna;
+    }
+
+    public void setInterna(boolean interna) {
+        this.interna = interna;
     }
 }
