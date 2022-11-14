@@ -1,11 +1,13 @@
 package com.cronolytics.api.controller;
 
+import com.cronolytics.api.dto.req.CadastroEmpresaDTO;
 import com.cronolytics.api.dto.req.CadastroRespondenteDTO;
 import com.cronolytics.api.dto.req.LoginDTO;
 import com.cronolytics.api.dto.req.SendMailDTO;
 import com.cronolytics.api.entity.Respondente;
 import com.cronolytics.api.repository.IRespondenteRepository;
 import com.cronolytics.api.service.MailService;
+import com.cronolytics.api.utils.enums.FilaObj;
 import com.cronolytics.api.utils.enums.ListaObj;
 import com.cronolytics.api.utils.enums.StatusAccount;
 import org.springframework.beans.BeanUtils;
@@ -27,6 +29,8 @@ public class RespondenteController {
     @Autowired
     MailService mailService;
 
+    FilaObj<CadastroRespondenteDTO> filaRespondente = new FilaObj<>(10);
+
     @GetMapping
     public ResponseEntity<ListaObj<Respondente>> listarTodos() {
         List<Respondente> lista = respondenteRepository.findAll();
@@ -43,7 +47,12 @@ public class RespondenteController {
     }
 
     @PostMapping
-    public ResponseEntity cadastro(@RequestBody CadastroRespondenteDTO payload) {
+    public ResponseEntity cadastro(@RequestBody CadastroRespondenteDTO respondenteDTO) {
+
+        filaRespondente.insert(respondenteDTO);
+
+        CadastroRespondenteDTO payload = filaRespondente.poll();
+
         if(respondenteRepository.existsByEmailOrCpf(
                 payload.getEmail(),
                 payload.getCpf()))
