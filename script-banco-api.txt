@@ -1,0 +1,173 @@
+drop table if exists resposta_gabarito
+drop table if exists resposta
+drop table if exists pergunta
+drop table if exists componente
+drop table if exists gabarito
+drop table if exists respondente
+drop table if exists convidado
+drop table if exists pesquisa
+drop table if exists cupom
+drop table if exists empresa
+drop table if exists conta_bancaria
+
+create table componente (
+       	id int IDENTITY(1,1),
+        multi_esc bit,
+        nome varchar(255),
+        primary key (id)
+    )
+
+create table conta_bancaria (
+       	id bigint IDENTITY(1,1),
+        agencia varchar(255),
+        digito varchar(255),
+        numero varchar(255),
+        pix varchar(255),
+        primary key (id)
+    )
+
+create table convidado (
+       	id integer IDENTITY(1,1),
+        email varchar(255),
+        nome varchar(255),
+        primary key (id)
+    )
+
+create table cupom (
+       	id bigint IDENTITY(1,1),
+        ativo bit,
+        codigo varchar(255),
+        percentual float,
+        validade date,
+        valor float,
+        primary key (id)
+    )
+
+ create table empresa (
+       	id integer IDENTITY(1,1),
+        cep varchar(255),
+        email varchar(255),
+        img varchar(255),
+        nome varchar(255),
+        senha varchar(255),
+        status_conta integer,
+        telefone varchar(255),
+        cnpj varchar(255),
+        conta_bancaria_id bigint null,
+        primary key (id)
+    )
+
+create table gabarito (
+       	id integer IDENTITY(1,1),
+        convidado_id integer,
+        pesquisa_id integer,
+        respondente_id bigint,
+        primary key (id)
+    )
+
+ create table pergunta (
+       	id integer IDENTITY(1,1),
+        descri varchar(255),
+        componente_id integer,
+        id_pesquisa integer,
+        primary key (id)
+    )
+
+create table pesquisa (
+       	id integer IDENTITY(1,1),
+        descri varchar(255),
+        encerrada bit not null,
+        exploratoria bit not null,
+        interna bit not null,
+        nome varchar(255),
+        participantes_alvo integer,
+        empresa_id integer,
+        primary key (id)
+    )
+
+ create table respondente (
+       	id bigint IDENTITY(1,1),
+        cep varchar(255),
+        email varchar(255),
+        img varchar(255),
+        nome varchar(255),
+        senha varchar(255),
+        status_respondente integer,
+        telefone varchar(255),
+        cpf varchar(255),
+        escolaridade varchar(255),
+        genero varchar(255),
+        primary key (id)
+    )
+
+create table resposta (
+       	id integer IDENTITY(1,1),
+        descri varchar(255),
+        id_pergunta integer,
+        primary key (id)
+    )
+
+create table resposta_gabarito (
+       	id integer IDENTITY(1,1),
+        descri varchar(255),
+        ranking integer,
+        pergunta_id integer,
+        resposta_id integer,
+        id_gabarito integer,
+        primary key (id)
+    )
+
+alter table empresa 
+       add
+       foreign key (conta_bancaria_id) 
+       references conta_bancaria
+
+ alter table gabarito 
+       add 
+       foreign key (convidado_id) 
+       references convidado
+
+alter table gabarito 
+       add 
+       foreign key (pesquisa_id) 
+       references pesquisa
+
+alter table gabarito 
+       add 
+       foreign key (respondente_id) 
+       references respondente
+
+alter table pergunta 
+       add 
+       foreign key (componente_id) 
+       references componente
+
+ alter table pergunta 
+       add 
+       foreign key (id_pesquisa) 
+       references pesquisa
+
+alter table pesquisa 
+       add 
+       foreign key (empresa_id) 
+       references empresa
+
+alter table resposta 
+       add 
+       foreign key (id_pergunta) 
+       references pergunta
+
+alter table resposta_gabarito 
+       add  
+       foreign key (pergunta_id) 
+       references pergunta
+
+alter table resposta_gabarito 
+       add  
+       foreign key (resposta_id) 
+       references resposta
+
+ alter table resposta_gabarito 
+       add  
+       foreign key (id_gabarito) 
+       references gabarito
