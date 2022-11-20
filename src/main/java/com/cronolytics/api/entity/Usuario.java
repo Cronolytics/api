@@ -12,7 +12,6 @@ public abstract class Usuario {
     private String email;
     private String cep;
     private String telefone;
-    private StatusAccount status;
 
     public Usuario() {
     }
@@ -24,8 +23,9 @@ public abstract class Usuario {
         this.email = email;
         this.cep = cep;
         this.telefone = telefone;
-        this.status = StatusAccount.PENDING;
     }
+
+
 
     public String getImg() {
         return img;
@@ -73,13 +73,5 @@ public abstract class Usuario {
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
-    }
-
-    public StatusAccount getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusAccount status) {
-        this.status = status;
     }
 }

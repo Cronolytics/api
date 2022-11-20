@@ -9,7 +9,7 @@ public class Pergunta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String desc;
+    private String descri;
     @ManyToOne
     private Componente componente;
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
@@ -25,11 +25,11 @@ public class Pergunta {
     }
 
     public String getDesc() {
-        return desc;
+        return descri;
     }
 
     public void setDesc(String desc) {
-        this.desc = desc;
+        this.descri = desc;
     }
 
     public Componente getComponente() {

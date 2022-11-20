@@ -10,7 +10,7 @@ public class Pesquisa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
-    private String desc;
+    private String descri;
     private boolean exploratoria;
     private boolean encerrada;
     private Integer participantesAlvo;
@@ -38,11 +38,11 @@ public class Pesquisa {
     }
 
     public String getDesc() {
-        return desc;
+        return descri;
     }
 
     public void setDesc(String desc) {
-        this.desc = desc;
+        this.descri = desc;
     }
 
     public boolean getExploratoria() {

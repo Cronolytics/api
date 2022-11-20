@@ -11,9 +11,9 @@ public class RespostaGabarito {
     private Pergunta pergunta;
     @OneToOne
     private Resposta resposta;
-    private String desc;
+    private String descri;
 
-    private Integer rank;
+    private Integer ranking;
 
     public Integer getId() {
         return id;
@@ -40,18 +40,18 @@ public class RespostaGabarito {
     }
 
     public String getDesc() {
-        return desc;
+        return descri;
     }
 
     public void setDesc(String desc) {
-        this.desc = desc;
+        this.descri = desc;
     }
 
     public Integer getRank() {
-        return rank;
+        return ranking;
     }
 
     public void setRank(Integer rank) {
-        this.rank = rank;
+        this.ranking = rank;
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class EmpresaObserver {
 
     private IEmpresaRepository empresaRepository;
-    private Long idUsuario;
+    private Integer idUsuario;
 
     public EmpresaObserver(Empresa empresa,IEmpresaRepository empresaRepository){
         this.idUsuario = empresa.getId();

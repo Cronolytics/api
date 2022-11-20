@@ -1,5 +1,7 @@
 package com.cronolytics.api.entity;
 
+import com.cronolytics.api.utils.enums.StatusAccount;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,6 +15,8 @@ public class Respondente extends Usuario {
     private String genero;
     private String escolaridade;
     private String cpf;
+
+    private StatusAccount statusRespondente;
 
     public Respondente(){super();}
 
@@ -29,6 +33,7 @@ public class Respondente extends Usuario {
         this.genero = genero;
         this.escolaridade = escolaridade;
         this.cpf = cpf;
+        this.statusRespondente= StatusAccount.PENDING;
     }
 
     public Long getId() {
@@ -77,5 +82,13 @@ public class Respondente extends Usuario {
 
     public void setEmail(String email){
         super.setEmail(email);
+    }
+
+    public StatusAccount getStatusRespondente() {
+        return statusRespondente;
+    }
+
+    public void setStatusRespondente(StatusAccount statusRespondente) {
+        this.statusRespondente = statusRespondente;
     }
 }

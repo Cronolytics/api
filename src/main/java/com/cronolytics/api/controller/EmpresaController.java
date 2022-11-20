@@ -66,7 +66,7 @@ public class EmpresaController {
     public ResponseEntity confirmarEmail(@PathVariable String code) {
 
         String decoded = new String(Base64.getDecoder().decode(code), StandardCharsets.UTF_8);
-        Long id = Long.parseLong(decoded);
+        Integer id = Integer.parseInt(decoded);
 
         Optional<Empresa> u = empresaRepository.findById(id);
 

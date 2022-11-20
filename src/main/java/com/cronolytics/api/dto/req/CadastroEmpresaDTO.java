@@ -12,7 +12,7 @@ public class CadastroEmpresaDTO extends Empresa{
         super(img, nome, senha, email, cep, telefone);
     }
 
-    public CadastroEmpresaDTO(String img, String nome, String senha, String email, String cep, String telefone, Long id, String cnpj, ContaBancaria contaBancaria) {
+    public CadastroEmpresaDTO(String img, String nome, String senha, String email, String cep, String telefone, Integer id, String cnpj, ContaBancaria contaBancaria) {
         super(img, nome, senha, email, cep, telefone, id, cnpj, contaBancaria);
     }
 

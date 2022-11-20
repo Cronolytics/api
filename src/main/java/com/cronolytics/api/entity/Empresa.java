@@ -9,33 +9,33 @@ import java.time.LocalDate;
 public class Empresa extends Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     private String cnpj;
     @OneToOne(cascade = CascadeType.PERSIST)
     private ContaBancaria contaBancaria;
-    private StatusAccount status;
+    private StatusAccount statusConta;
 
     public Empresa(String img, String nome, String senha, String email, String cep, String telefone) {
         super(img, nome, senha, email, cep, telefone);
     }
 
-    public Empresa(String img, String nome, String senha, String email, String cep, String telefone, Long id, String cnpj, ContaBancaria contaBancaria) {
+    public Empresa(String img, String nome, String senha, String email, String cep, String telefone, Integer id, String cnpj, ContaBancaria contaBancaria) {
         super(img, nome, senha, email, cep, telefone);
         this.id = id;
         this.cnpj = cnpj;
         this.contaBancaria = contaBancaria;
-        this.status = StatusAccount.PENDING;
+        this.statusConta = StatusAccount.PENDING;
     }
 
     public Empresa() {
         super();
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -71,13 +71,10 @@ public class Empresa extends Usuario {
         super.setEmail(email);
     }
 
-    @Override
     public StatusAccount getStatus() {
-        return status;
+        return statusConta;
     }
-
-    @Override
     public void setStatus(StatusAccount status) {
-        this.status = status;
+        this.statusConta = status;
     }
 }

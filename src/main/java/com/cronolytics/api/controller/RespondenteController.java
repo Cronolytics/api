@@ -94,7 +94,7 @@ public class RespondenteController {
         Optional<Respondente> respondente = respondenteRepository.findById(id);
 
         if (respondente.isPresent()) {
-            respondente.get().setStatus(StatusAccount.VERIFIED);
+            respondente.get().setStatusRespondente(StatusAccount.VERIFIED);
             respondenteRepository.save(respondente.get());
             return ResponseEntity.status(200).build();
         }

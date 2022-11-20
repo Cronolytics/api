@@ -10,7 +10,7 @@ public class Resposta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String desc;
+    private String descri;
 
     public Integer getId() {
         return id;
@@ -21,10 +21,10 @@ public class Resposta {
     }
 
     public String getDesc() {
-        return desc;
+        return descri;
     }
 
     public void setDesc(String desc) {
-        this.desc = desc;
+        this.descri = desc;
     }
 }

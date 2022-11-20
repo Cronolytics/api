@@ -14,7 +14,7 @@ public abstract class Cupom {
     private String codigo;
     private LocalDate validade;
     private Double valor;
-    private Double percent;
+    private Double percentual;
     private Boolean ativo;
 
     public Cupom() {
@@ -53,11 +53,11 @@ public abstract class Cupom {
     }
 
     public Double getPercent() {
-        return percent;
+        return percentual;
     }
 
     public void setPercent(Double percent) {
-        this.percent = percent;
+        this.percentual = percent;
     }
 
     public Boolean getAtivo() {
