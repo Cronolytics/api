@@ -54,7 +54,8 @@ public class PesquisaService {
         if (getSubjectPorPesquisa(gabarito.getPesquisa()) == null){
             return false;
         }
-        if (gabarito.getConvidado() != null && gabarito.getRespondente() == null){
+        if (gabarito.getConvidado() != null && gabarito.getRespondente() == null
+            && getSubjectPorPesquisa(gabarito.getPesquisa()) != null){
             convidadoRepository.save(gabarito.getConvidado());
             if (!pesquisaRepository.existsById(gabarito.getPesquisa().getId())){
                 return false;
