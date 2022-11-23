@@ -38,6 +38,15 @@ public class PesquisaController {
                 ResponseEntity.status(404).build();
     }
 
+    @GetMapping
+    public ResponseEntity getPesquisa(@RequestParam(required = true) Integer idPesquisa){
+//        if(!pesquisaRepository.existsById(idPesquisa)){
+//            return ResponseEntity.status(404).build();
+//        }
+        Optional<Pesquisa> pesquisa = pesquisaRepository.findById(idPesquisa);
+        return ResponseEntity.status(200).body(pesquisa);
+    }
+
     @GetMapping("/pesquisas-simples")
     public ResponseEntity pesquisasSimples(@RequestParam(required = true) Integer idEmpresa){
         if(!empresaRepository.existsById(idEmpresa)){

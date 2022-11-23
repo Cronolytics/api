@@ -8,4 +8,6 @@ public class PesquisaSimplesDTO {
     private int qtdRespostas;
     private int qtdPessoas;
 
+
+
 }
