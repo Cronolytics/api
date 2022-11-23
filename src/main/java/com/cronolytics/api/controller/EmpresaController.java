@@ -4,8 +4,11 @@ import com.cronolytics.api.dto.req.CadastroEmpresaDTO;
 import com.cronolytics.api.dto.req.LoginDTO;
 import com.cronolytics.api.dto.req.SendMailDTO;
 import com.cronolytics.api.entity.Empresa;
+import com.cronolytics.api.entity.Pesquisa;
 import com.cronolytics.api.repository.IEmpresaRepository;
+import com.cronolytics.api.repository.IPesquisaRepository;
 import com.cronolytics.api.service.MailService;
+import com.cronolytics.api.service.PesquisaService;
 import com.cronolytics.api.utils.enums.StatusAccount;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -25,6 +29,11 @@ public class EmpresaController {
 
     @Autowired
     MailService mailService;
+    @Autowired
+    IPesquisaRepository pesquisaRepository;
+
+    @Autowired
+    PesquisaService pesquisaService;
 
     @PostMapping
     public ResponseEntity cadastro(@RequestBody CadastroEmpresaDTO payload) {
@@ -90,5 +99,18 @@ public class EmpresaController {
         if (empresa == null) return ResponseEntity.status(404).build();
 
         return ResponseEntity.status(200).build();
+    }
+
+    @GetMapping("/pesquisas")
+    public ResponseEntity pesquisas(@RequestParam(required = true) Integer idEmpresa){
+        //Integer idCorreto = Integer.parseInt(id);
+        if(!empresaRepository.existsById(idEmpresa)){
+            return ResponseEntity.status(404).build();
+        }
+        List<Optional<Pesquisa>> pesquisas = pesquisaRepository.findAllByEmpresaId(idEmpresa);
+        if (pesquisas.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }
+        return ResponseEntity.status(200).body(pesquisas);
     }
 }
