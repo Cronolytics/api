@@ -1,8 +1,37 @@
 package com.cronolytics.api.entity;
 
+import com.cronolytics.api.dto.res.PesquisaSimplesDTO;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+
+@NamedNativeQuery(name = "Pesquisa.PesquisaSimplesDTOByIdEmpresa",
+        query = "SELECT " +
+                "p.id AS id, " +
+                "p.nome AS titulo, " +
+                "(SELECT COUNT(pe.id) FROM pergunta pe WHERE pe.id_pesquisa = p.id) AS perguntas, " +
+                "(SELECT COUNT(gab.id) FROM gabarito gab WHERE gab.pesquisa_id=p.id) AS pessoas, " +
+                "p.encerrada AS em_andamento, p.interna AS interna, " +
+                "p.exploratoria AS exploratoria " +
+                "FROM pesquisa p " +
+                "WHERE p.empresa_id = :idEmpresa",
+        resultSetMapping = "com.cronolytics.api.dto.res.PesquisaSimplesDTO")
+@SqlResultSetMapping(
+        name = "com.cronolytics.api.dto.res.PesquisaSimplesDTO",
+        classes = @ConstructorResult(
+                targetClass = PesquisaSimplesDTO.class,
+                columns = {
+                        @ColumnResult(name = "id"),
+                        @ColumnResult(name = "titulo"),
+                        @ColumnResult(name = "perguntas"),
+                        @ColumnResult(name = "pessoas"),
+                        @ColumnResult(name = "em_andamento"),
+                        @ColumnResult(name = "interna"),
+                        @ColumnResult(name = "exploratoria")
+                }
+        )
+)
 
 @Entity
 public class Pesquisa {

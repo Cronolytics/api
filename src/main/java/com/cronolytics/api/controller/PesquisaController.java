@@ -1,5 +1,6 @@
 package com.cronolytics.api.controller;
 
+import com.cronolytics.api.dto.res.PesquisaSimplesDTO;
 import com.cronolytics.api.entity.Gabarito;
 import com.cronolytics.api.entity.Pesquisa;
 import com.cronolytics.api.repository.IEmpresaRepository;
@@ -40,9 +41,9 @@ public class PesquisaController {
 
     @GetMapping
     public ResponseEntity getPesquisa(@RequestParam(required = true) Integer idPesquisa){
-//        if(!pesquisaRepository.existsById(idPesquisa)){
-//            return ResponseEntity.status(404).build();
-//        }
+        if(!pesquisaRepository.existsById(idPesquisa)){
+            return ResponseEntity.status(404).build();
+        }
         Optional<Pesquisa> pesquisa = pesquisaRepository.findById(idPesquisa);
         return ResponseEntity.status(200).body(pesquisa);
     }
@@ -52,10 +53,10 @@ public class PesquisaController {
         if(!empresaRepository.existsById(idEmpresa)){
             return ResponseEntity.status(404).build();
         }
-        List<Optional<Pesquisa>> pesquisas = pesquisaRepository.findAllByEmpresaId(idEmpresa);
+        List<Optional<PesquisaSimplesDTO>> pesquisas = pesquisaRepository.PesquisaSimplesDTOByIdEmpresa(idEmpresa);
         if (pesquisas.isEmpty()){
             return ResponseEntity.status(204).build();
         }
-        return ResponseEntity.status(200).build();
+        return ResponseEntity.status(200).body(pesquisas);
     }
 }
