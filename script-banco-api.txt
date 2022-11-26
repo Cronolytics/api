@@ -167,7 +167,9 @@ alter table resposta_gabarito
        foreign key (resposta_id) 
        references resposta
 
- alter table resposta_gabarito 
+alter table resposta_gabarito 
        add  
        foreign key (id_gabarito) 
        references gabarito
+
+INSERT INTO componente(multi_esc,nome) VALUES (0,'radio')
