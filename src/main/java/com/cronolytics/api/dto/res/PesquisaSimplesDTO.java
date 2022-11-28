@@ -20,7 +20,7 @@ public class PesquisaSimplesDTO {
         this.qtdPerguntas = qtdPerguntas;
         this.qtdPessoas = qtdPessoas;
         this.qtdRespostas = qtdPerguntas * qtdPessoas;
-        this.ativa = ativa;
+        this.ativa = !ativa;
         this.interna = interna;
         this.exploratoria = exploratoria;
     }

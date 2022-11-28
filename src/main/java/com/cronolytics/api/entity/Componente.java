@@ -13,6 +13,15 @@ public class Componente {
     private String nome;
     private Boolean multiEsc;
 
+    public Componente(Integer id, String nome, Boolean multiEsc) {
+        this.id = id;
+        this.nome = nome;
+        this.multiEsc = multiEsc;
+    }
+
+    public Componente() {
+    }
+
     public Integer getId() {
         return id;
     }
