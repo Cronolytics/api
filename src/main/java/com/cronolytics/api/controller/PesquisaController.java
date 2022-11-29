@@ -79,7 +79,7 @@ public class PesquisaController {
             }
         }
 
-        
+
         if (pesquisas.isEmpty()){
             return ResponseEntity.status(204).build();
         }

@@ -1,4 +1,4 @@
-package com.cronolytics.api.utils.enums;
+package com.cronolytics.api.utils;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
