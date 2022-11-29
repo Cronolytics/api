@@ -61,8 +61,6 @@ public class PesquisaController {
         if(!empresaRepository.existsById(idEmpresa)){
             return ResponseEntity.status(404).build();
         }
-
-
         List<Optional<PesquisaSimplesDTO>> pesquisas = pesquisaRepository.PesquisaSimplesDTOByIdEmpresa(idEmpresa);
 
 
