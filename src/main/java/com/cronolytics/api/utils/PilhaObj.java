@@ -1,4 +1,4 @@
-package com.cronolytics.api.utils.enums;
+package com.cronolytics.api.utils;
 
 public class PilhaObj<T> {
 
@@ -51,5 +51,9 @@ public class PilhaObj<T> {
 
     public int getTopo() {
         return topo;
+    }
+
+    public int getTamanho() {
+        return this.pilha.length;
     }
 }
