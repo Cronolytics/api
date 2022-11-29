@@ -7,6 +7,7 @@ import com.cronolytics.api.entity.Gabarito;
 import com.cronolytics.api.entity.Pesquisa;
 import com.cronolytics.api.repository.*;
 import com.cronolytics.api.service.PesquisaService;
+import com.cronolytics.api.utils.PilhaObj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -63,6 +64,22 @@ public class PesquisaController {
 
 
         List<Optional<PesquisaSimplesDTO>> pesquisas = pesquisaRepository.PesquisaSimplesDTOByIdEmpresa(idEmpresa);
+
+
+//        PilhaObj<PesquisaSimplesDTO> pilha = new PilhaObj<PesquisaSimplesDTO>(pesquisas.size());
+//
+//        if (!pesquisas.isEmpty()) {
+//            for (Optional p : pesquisas) {
+//                pilha.push((PesquisaSimplesDTO) p.get());
+//                pesquisas.remove(p);
+//            }
+//
+//            for(int i = 0; i < pilha.getTamanho(); i++) {
+//                pesquisas.add(Optional.ofNullable(pilha.pop()));
+//            }
+//        }
+
+
         if (pesquisas.isEmpty()){
             return ResponseEntity.status(204).build();
         }
