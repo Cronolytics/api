@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,35 +65,23 @@ public class PesquisaController {
         List<Optional<PesquisaSimplesDTO>> pesquisas = pesquisaRepository.PesquisaSimplesDTOByIdEmpresa(idEmpresa);
         pesquisas.forEach((pesquisa)->{int qtdRespostas = gabaritoRepository.countByPesquisaId(pesquisa.get().getId()); pesquisa.get().setQtdPessoas( qtdRespostas != 0 ? qtdRespostas : 0);});
 
-
         PilhaObj<Optional<PesquisaSimplesDTO>> pilha = new PilhaObj<>(pesquisas.size());
 
-        if (!pesquisas.isEmpty()) {
-//            for (Optional p : pesquisas) {
-//                pilha.push((PesquisaSimplesDTO) p.get());
-//                pesquisas.remove(p);
-//            }
-            int listaTamanho = pesquisas.size();
-            for (int i = 0; i < pesquisas.size(); i++) {
-                Optional<PesquisaSimplesDTO> pesquisa = pesquisas.get(i);
-                pilha.push(pesquisa);
-                pesquisas.remove(pesquisa);
-            }
+        List<PesquisaSimplesDTO> pesquisaArrayFinal = new ArrayList<>();
 
-            for(int i = 0; i < listaTamanho; i++) {
-                if (pilha.peek() == null){
-                    pilha.pop();
-                }
-                else {
-                pesquisas.add(i,pilha.pop());
-                }
-            }
-        }
-
-        if (pesquisas.isEmpty()){
+        if (pesquisas.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
-        return ResponseEntity.status(200).body(pesquisas);
+
+        for (int i = 0; i < pesquisas.size(); i++) {
+            pilha.push(pesquisas.get(i));
+        }
+
+        for (int i = 0; i < pilha.getTamanho(); i++) {
+            pesquisaArrayFinal.add(pilha.pop().get());
+        }
+
+        return ResponseEntity.status(200).body(pesquisaArrayFinal);
     }
 
     @GetMapping("/media-pesquisa")
