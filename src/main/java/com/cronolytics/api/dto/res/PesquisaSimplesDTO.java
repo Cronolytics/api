@@ -13,7 +13,7 @@ public class PesquisaSimplesDTO {
 
     private boolean exploratoria;
 
-    public PesquisaSimplesDTO(int id,  String nome, int qtdPerguntas, int qtdPessoas, boolean ativa, boolean interna, boolean exploratoria) {
+    public PesquisaSimplesDTO(int id,  String nome, int qtdPerguntas, boolean ativa, boolean interna, boolean exploratoria) {
         this.id = id;
         this.selecionado = selecionado;
         this.nome = nome;
@@ -71,6 +71,7 @@ public class PesquisaSimplesDTO {
 
     public void setQtdPessoas(int qtdPessoas) {
         this.qtdPessoas = qtdPessoas;
+        this.qtdRespostas = qtdPerguntas * qtdPessoas;
     }
 
     public boolean isAtiva() {

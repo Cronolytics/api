@@ -9,6 +9,21 @@ drop table if exists pesquisa
 drop table if exists cupom
 drop table if exists empresa
 drop table if exists conta_bancaria
+drop table if exists candidato
+
+create table candidato (
+        id integer primary key identity(1,1),
+        cep varchar(255),
+        cpf varchar(255),
+        data_nascimento date,
+        email varchar(255),
+        estado_civil varchar(255),
+        grau_de_ensino varchar(255),
+        instituicao_de_ensino varchar(255),
+        nome varchar(255),
+        telefone varchar(255),
+        vaga varchar(255)
+    )
 
 create table componente (
        	id int IDENTITY(1,1),

@@ -21,8 +21,9 @@ public class GeradorCsv {
                     "TELEFONE",
                     "CEP",
                     "ESTADO CIVIL",
-                    "LINKEDIN",
-                    "DESCRICAO"
+                    "INSTITUICAO DE ENSINO",
+                    "VAGA",
+                    "GRAU DE ENSINO"
             };
 
             CSVPrinter printer = new CSVPrinter(
@@ -43,8 +44,9 @@ public class GeradorCsv {
                     "TELEFONE",
                     "CEP",
                     "ESTADO CIVIL",
-                    "LINKEDIN",
-                    "DESCRICAO");
+                    "INSTITUICAO DE ENSINO",
+                    "VAGA",
+                    "GRAU DE ENSINO");
 
 
             for (Candidato candidato : candidatos) {
@@ -56,8 +58,9 @@ public class GeradorCsv {
                         candidato.getTelefone(),
                         candidato.getCep(),
                         candidato.getEstadoCivil(),
-                        candidato.getLinkedin(),
-                        candidato.getDescricao()
+                        candidato.getInstituicaoDeEnsino(),
+                        candidato.getVaga(),
+                        candidato.getGrauDeEnsino()
                 );
             }
 

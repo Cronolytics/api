@@ -11,7 +11,6 @@ import java.util.List;
                 "p.id AS id, " +
                 "p.nome AS titulo, " +
                 "(SELECT COUNT(pe.id) FROM pergunta pe WHERE pe.id_pesquisa = p.id) AS perguntas, " +
-                "(SELECT COUNT(gab.id) FROM gabarito gab WHERE gab.pesquisa_id=p.id) AS pessoas, " +
                 "p.encerrada AS em_andamento, p.interna AS interna, " +
                 "p.exploratoria AS exploratoria " +
                 "FROM pesquisa p " +
@@ -25,7 +24,6 @@ import java.util.List;
                         @ColumnResult(name = "id"),
                         @ColumnResult(name = "titulo"),
                         @ColumnResult(name = "perguntas"),
-                        @ColumnResult(name = "pessoas"),
                         @ColumnResult(name = "em_andamento"),
                         @ColumnResult(name = "interna"),
                         @ColumnResult(name = "exploratoria")

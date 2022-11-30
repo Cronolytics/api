@@ -75,8 +75,9 @@ public class CandidatoController {
                         csvRecord.get("TELEFONE"),
                         csvRecord.get("CEP"),
                         csvRecord.get("ESTADO CIVIL"),
-                        csvRecord.get("LINKEDIN"),
-                        csvRecord.get("DESCRICAO")
+                        csvRecord.get("INSTITUICAO DE ENSINO"),
+                        csvRecord.get("VAGA"),
+                        csvRecord.get("GRAU DE ENSINO")
                 );
 
                 candidatos.add(candidato);

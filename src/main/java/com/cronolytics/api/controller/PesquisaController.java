@@ -62,21 +62,32 @@ public class PesquisaController {
             return ResponseEntity.status(404).build();
         }
         List<Optional<PesquisaSimplesDTO>> pesquisas = pesquisaRepository.PesquisaSimplesDTOByIdEmpresa(idEmpresa);
+        pesquisas.forEach((pesquisa)->{int qtdRespostas = gabaritoRepository.countByPesquisaId(pesquisa.get().getId()); pesquisa.get().setQtdPessoas( qtdRespostas != 0 ? qtdRespostas : 0);});
 
 
-//        PilhaObj<PesquisaSimplesDTO> pilha = new PilhaObj<PesquisaSimplesDTO>(pesquisas.size());
-//
-//        if (!pesquisas.isEmpty()) {
+        PilhaObj<Optional<PesquisaSimplesDTO>> pilha = new PilhaObj<>(pesquisas.size());
+
+        if (!pesquisas.isEmpty()) {
 //            for (Optional p : pesquisas) {
 //                pilha.push((PesquisaSimplesDTO) p.get());
 //                pesquisas.remove(p);
 //            }
-//
-//            for(int i = 0; i < pilha.getTamanho(); i++) {
-//                pesquisas.add(Optional.ofNullable(pilha.pop()));
-//            }
-//        }
+            int listaTamanho = pesquisas.size();
+            for (int i = 0; i < pesquisas.size(); i++) {
+                Optional<PesquisaSimplesDTO> pesquisa = pesquisas.get(i);
+                pilha.push(pesquisa);
+                pesquisas.remove(pesquisa);
+            }
 
+            for(int i = 0; i < listaTamanho; i++) {
+                if (pilha.peek() == null){
+                    pilha.pop();
+                }
+                else {
+                pesquisas.add(i,pilha.pop());
+                }
+            }
+        }
 
         if (pesquisas.isEmpty()){
             return ResponseEntity.status(204).build();

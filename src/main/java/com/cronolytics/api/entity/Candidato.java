@@ -18,8 +18,9 @@ public class Candidato {
     private String telefone;
     private String cep;
     private String estadoCivil;
-    private String linkedin;
-    private String descricao;
+    private String instituicaoDeEnsino;
+    private String vaga;
+    private String grauDeEnsino;
 
     public Integer getId() {
         return id;
@@ -37,15 +38,17 @@ public class Candidato {
         this.nome = nome;
     }
 
-    public Candidato(String nome,
+    public Candidato(
+                     String nome,
                      String cpf,
                      String email,
                      LocalDate dataNascimento,
                      String telefone,
                      String cep,
                      String estadoCivil,
-                     String linkedin,
-                     String descricao) {
+                     String instituicaoDeEnsino,
+                     String vaga,
+                     String grauDeEnsino) {
         this.nome = nome;
         this.cpf = cpf;
         this.email = email;
@@ -53,28 +56,36 @@ public class Candidato {
         this.telefone = telefone;
         this.cep = cep;
         this.estadoCivil = estadoCivil;
-        this.linkedin = linkedin;
-        this.descricao = descricao;
+        this.instituicaoDeEnsino = instituicaoDeEnsino;
+        this.vaga = vaga;
+        this.grauDeEnsino = grauDeEnsino;
     }
 
-    public Candidato() {
+    public Candidato(Integer id,
+                     String nome,
+                     String cpf,
+                     String email,
+                     LocalDate dataNascimento,
+                     String telefone,
+                     String cep,
+                     String estadoCivil,
+                     String instituicaoDeEnsino,
+                     String vaga,
+                     String grauDeEnsino) {
+        this.id = id;
+        this.nome = nome;
+        this.cpf = cpf;
+        this.email = email;
+        this.dataNascimento = dataNascimento;
+        this.telefone = telefone;
+        this.cep = cep;
+        this.estadoCivil = estadoCivil;
+        this.instituicaoDeEnsino = instituicaoDeEnsino;
+        this.vaga = vaga;
+        this.grauDeEnsino = grauDeEnsino;
     }
 
-    @Override
-    public String toString() {
-        return "Candidato{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", cpf='" + cpf + '\'' +
-                ", email='" + email + '\'' +
-                ", dataNascimento=" + dataNascimento +
-                ", telefone='" + telefone + '\'' +
-                ", cep='" + cep + '\'' +
-                ", estadoCivil='" + estadoCivil + '\'' +
-                ", linkedin='" + linkedin + '\'' +
-                ", descricao='" + descricao + '\'' +
-                '}';
-    }
+    public Candidato(){}
 
     public String getCpf() {
         return cpf;
@@ -124,19 +135,27 @@ public class Candidato {
         this.estadoCivil = estadoCivil;
     }
 
-    public String getLinkedin() {
-        return linkedin;
+    public String getInstituicaoDeEnsino() {
+        return instituicaoDeEnsino;
     }
 
-    public void setLinkedin(String linkedin) {
-        this.linkedin = linkedin;
+    public void setInstituicaoDeEnsino(String instituicaoDeEnsino) {
+        this.instituicaoDeEnsino = instituicaoDeEnsino;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public String getVaga() {
+        return vaga;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setVaga(String descricao) {
+        this.vaga = descricao;
+    }
+
+    public String getGrauDeEnsino() {
+        return grauDeEnsino;
+    }
+
+    public void setGrauDeEnsino(String grauDeEnsino) {
+        this.grauDeEnsino = grauDeEnsino;
     }
 }
