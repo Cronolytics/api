@@ -10,7 +10,7 @@ import java.util.List;
         query = "SELECT " +
                 "p.id AS id, " +
                 "p.nome AS titulo, " +
-                "(SELECT COUNT(pe.id) FROM pergunta pe WHERE pe.id_pesquisa = p.id) AS perguntas, " +
+                "(SELECT COUNT(pe.descri) FROM pergunta pe WHERE pe.id_pesquisa = p.id) AS perguntas, " +
                 "p.encerrada AS em_andamento, p.interna AS interna, " +
                 "p.exploratoria AS exploratoria " +
                 "FROM pesquisa p " +

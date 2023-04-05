@@ -5,7 +5,10 @@ import com.cronolytics.api.dto.res.RespostaSimplesDTO;
 import javax.persistence.*;
 
 @NamedNativeQuery(name = "Resposta.RespostaSimplesDTOByIdPergunta",
-                query = "SELECT re.id AS id, re.descri AS label, (SELECT COUNT(re_gab.id) FROM resposta_gabarito re_gab WHERE re_gab.resposta_id = re.id) AS qtd_respostas FROM resposta re WHERE re.id_pergunta = :idPergunta",
+        query = "SELECT re.id AS id, " +
+                "re.descri AS label, " +
+                "(SELECT COUNT(*) FROM resposta_gabarito re_gab WHERE re_gab.resposta_id = re.id) AS qtd_respostas " +
+                "FROM resposta re WHERE re.id_pergunta = :idPergunta",
         resultSetMapping = "com.cronolytics.api.dto.res.RespostaSimplesDTO"
 )
 @SqlResultSetMapping(

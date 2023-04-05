@@ -13,10 +13,10 @@ public class PerguntaSimplesDTO {
     private Componente componente;
     private  List<Optional<RespostaSimplesDTO>> respostas;
 
-    public PerguntaSimplesDTO(int id, String titulo, boolean multi_esc,String nomeComp, int idComp) {
-        this.id = id;
+    public PerguntaSimplesDTO(Integer id, String titulo, Boolean multi_esc,String nomeComp, Integer idComp) {
+        this.id = id.intValue();
         this.titulo = titulo;
-        this.componente = new Componente(idComp,nomeComp,multi_esc);
+        this.componente = new Componente(idComp.intValue(),nomeComp,multi_esc.booleanValue());
     }
 
     public PerguntaSimplesDTO(){}

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -63,7 +64,7 @@ public class PesquisaController {
             return ResponseEntity.status(404).build();
         }
         List<Optional<PesquisaSimplesDTO>> pesquisas = pesquisaRepository.PesquisaSimplesDTOByIdEmpresa(idEmpresa);
-        pesquisas.forEach((pesquisa)->{int qtdRespostas = gabaritoRepository.countByPesquisaId(pesquisa.get().getId()); pesquisa.get().setQtdPessoas( qtdRespostas != 0 ? qtdRespostas : 0);});
+        pesquisas.forEach((pesquisa)->{int qtdRespostas = gabaritoRepository.countGabaritoIdByPesquisaId(pesquisa.get().getId()).intValue(); pesquisa.get().setQtdPessoas( qtdRespostas != 0 ? qtdRespostas : 0);});
 
         PilhaObj<Optional<PesquisaSimplesDTO>> pilha = new PilhaObj<>(pesquisas.size());
 
@@ -91,11 +92,11 @@ public class PesquisaController {
         }
         List<Optional<PerguntaSimplesDTO>> perguntas = perguntaRepository.PerguntaSimplesDTOByIdPesquisa(idPesquisa);
         perguntas.forEach((pergunta)->{pergunta.get().setRespostas(respostasRepository.RespostaSimplesDTOByIdPergunta(pergunta.get().getId()));});
-        int respostasTotais = gabaritoRepository.countByPesquisaId(idPesquisa);
-        if(respostasTotais != 0){
-            perguntas.forEach((pergunta)->{pergunta.get().getRespostas().forEach((resposta)->{resposta.get().setPctTotal(resposta.get().getQtdRespostas() == 0 ? 0.0 : resposta.get().getQtdRespostas() * 100/ respostasTotais);});});
+        BigInteger respostasTotais = gabaritoRepository.countGabaritoIdByPesquisaId(idPesquisa);
+        if(respostasTotais.intValue() != 0){
+            perguntas.forEach((pergunta)->{pergunta.get().getRespostas().forEach((resposta)->{resposta.get().setPctTotal(resposta.get().getQtdRespostas() == 0 ? 0.0 : resposta.get().getQtdRespostas() * 100/ respostasTotais.intValue());});});
         }
-        MediaPesquisaDTO media = new MediaPesquisaDTO(idPesquisa,perguntas,respostasTotais);
+        MediaPesquisaDTO media = new MediaPesquisaDTO(idPesquisa,perguntas,respostasTotais.intValue());
         return ResponseEntity.status(200).body(media);
     }
 }

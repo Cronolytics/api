@@ -1,5 +1,7 @@
 package com.cronolytics.api.dto.res;
 
+import java.math.BigInteger;
+
 public class PesquisaSimplesDTO {
     private int id;
     private boolean selecionado;
@@ -13,16 +15,16 @@ public class PesquisaSimplesDTO {
 
     private boolean exploratoria;
 
-    public PesquisaSimplesDTO(int id,  String nome, int qtdPerguntas, boolean ativa, boolean interna, boolean exploratoria) {
-        this.id = id;
+    public PesquisaSimplesDTO(Integer id, String nome, BigInteger qtdPerguntas, Boolean ativa, Boolean interna, Boolean exploratoria) {
+        this.id = id.intValue();
         this.selecionado = selecionado;
         this.nome = nome;
-        this.qtdPerguntas = qtdPerguntas;
+        this.qtdPerguntas = qtdPerguntas.intValue();
         this.qtdPessoas = qtdPessoas;
-        this.qtdRespostas = qtdPerguntas * qtdPessoas;
-        this.ativa = !ativa;
-        this.interna = interna;
-        this.exploratoria = exploratoria;
+        //this.qtdRespostas = qtdPerguntas * qtdPessoas;
+        this.ativa = !ativa.booleanValue();
+        this.interna = interna.booleanValue();
+        this.exploratoria = exploratoria.booleanValue();
     }
 
     public int getId() {

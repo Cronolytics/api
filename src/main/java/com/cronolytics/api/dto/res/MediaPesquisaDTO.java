@@ -13,10 +13,10 @@ public class MediaPesquisaDTO {
     private List<Optional<PerguntaSimplesDTO>> perguntas;
     private int respostasTotais;
 
-    public MediaPesquisaDTO(int id, List<Optional<PerguntaSimplesDTO>> perguntas, int respostasTotais) {
-        this.id = id;
+    public MediaPesquisaDTO(Integer id, List<Optional<PerguntaSimplesDTO>> perguntas, Integer respostasTotais) {
+        this.id = id.intValue();
         this.perguntas = perguntas;
-        this.respostasTotais = respostasTotais;
+        this.respostasTotais = respostasTotais.intValue();
     }
 
     public MediaPesquisaDTO(){}

@@ -3,6 +3,7 @@ package com.cronolytics.api.service;
 import com.cronolytics.api.entity.Gabarito;
 import com.cronolytics.api.entity.Pesquisa;
 import com.cronolytics.api.repository.*;
+import com.cronolytics.api.service.subject.EmpresaSubject;
 import com.cronolytics.api.service.subject.PesquisaSubject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,9 @@ public class PesquisaService {
     @Autowired
     private IPesquisaRepository repository;
     private List<PesquisaSubject> subjects = new ArrayList<>();
+
+    private List<EmpresaSubject> empresaSubjects = new ArrayList<>();
+    
     @Autowired
     private IEmpresaRepository empresaRepository;
     @Autowired

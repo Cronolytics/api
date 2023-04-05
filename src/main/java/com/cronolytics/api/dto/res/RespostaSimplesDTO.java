@@ -1,15 +1,17 @@
 package com.cronolytics.api.dto.res;
 
+import java.math.BigInteger;
+
 public class RespostaSimplesDTO {
     private int id;
     private String label;
     private int qtdRespostas;
     private double pctTotal;
 
-    public RespostaSimplesDTO(int id, String label, int qtdRespostas) {
-        this.id = id;
+    public RespostaSimplesDTO(Integer id, String label, BigInteger qtdRespostas) {
+        this.id = id.intValue();
         this.label = label;
-        this.qtdRespostas = qtdRespostas;
+        this.qtdRespostas = qtdRespostas.intValue();
     }
 
 
