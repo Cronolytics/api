@@ -84,6 +84,7 @@ public class Pesquisa {
         return encerrada;
     }
 
+
     public void setEncerrada(boolean encerrada) {
         this.encerrada = encerrada;
     }

@@ -1,12 +1,17 @@
 package com.cronolytics.api.controller;
 
-import com.cronolytics.api.dto.req.CadastroEmpresaDTO;
 import com.cronolytics.api.dto.req.CadastroRespondenteDTO;
 import com.cronolytics.api.dto.req.LoginDTO;
 import com.cronolytics.api.dto.req.SendMailDTO;
+import com.cronolytics.api.entity.Empresa;
+import com.cronolytics.api.entity.Pesquisa;
 import com.cronolytics.api.entity.Respondente;
+import com.cronolytics.api.entity.Seguidores;
+import com.cronolytics.api.repository.IEmpresaRepository;
+import com.cronolytics.api.repository.IPesquisaRepository;
 import com.cronolytics.api.repository.IRespondenteRepository;
 import com.cronolytics.api.service.MailService;
+import com.cronolytics.api.service.PesquisaService;
 import com.cronolytics.api.utils.enums.FilaObj;
 import com.cronolytics.api.utils.enums.ListaObj;
 import com.cronolytics.api.utils.enums.StatusAccount;
@@ -15,7 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -29,9 +36,18 @@ public class RespondenteController {
     @Autowired
     MailService mailService;
 
+    @Autowired
+    PesquisaService pesquisaService;
+
+    @Autowired
+    IEmpresaRepository empresaRepository;
+
+    @Autowired
+    IPesquisaRepository pesquisaRepository;
+
     FilaObj<CadastroRespondenteDTO> filaRespondente = new FilaObj<>(10);
 
-    @GetMapping
+    @GetMapping("/listar-respondentes")
     public ResponseEntity<ListaObj<Respondente>> listarTodos() {
         List<Respondente> lista = respondenteRepository.findAll();
 
@@ -46,7 +62,7 @@ public class RespondenteController {
         return ResponseEntity.ok(listaObj);
     }
 
-    @PostMapping
+    @PostMapping("/cadastro")
     public ResponseEntity cadastro(@RequestBody CadastroRespondenteDTO respondenteDTO) {
 
         filaRespondente.insert(respondenteDTO);
@@ -112,6 +128,43 @@ public class RespondenteController {
 
         if (respondente == null) return ResponseEntity.status(404).build();
 
-        return ResponseEntity.status(200).build();
+        return ResponseEntity.status(200).body(respondente);
+    }
+
+    @PostMapping("/inscricao")
+    public ResponseEntity inscricao(
+            @RequestBody Respondente respondente,
+            @RequestParam(required = true) @NotNull Integer idEmpresa){
+        Seguidores seguindo = pesquisaService.seguirEmpresa(respondente,idEmpresa);
+        return seguindo != null ? ResponseEntity.status(201).body(seguindo) : ResponseEntity.status(404).build();
+    }
+
+    @GetMapping("/empresas-ativas")
+    public ResponseEntity empresasAtivas(){
+        List<Empresa> empresas = empresaRepository.findAll();
+        return !empresas.isEmpty() ? ResponseEntity.status(200).body(empresas) : ResponseEntity.status(204).build();
+    }
+
+    @GetMapping("/pesquisas-empresa")
+    public ResponseEntity pesquisasExternas(@RequestParam(required = true) Integer idEmpresa){
+        List<Optional<Pesquisa>> pesquisas = pesquisaRepository.findAllByEncerradaFalseAndInternaFalse();
+        List<Optional<Pesquisa>> pesquisasEsp = new ArrayList<>();
+        pesquisas.forEach((pesquisa) -> {
+                if(pesquisa.get().getEmpresa().getId() == idEmpresa){
+                    pesquisasEsp.add(pesquisa);
+                }
+            }
+        );
+        return !pesquisasEsp.isEmpty() ? ResponseEntity
+                .status(200)
+                .body(pesquisasEsp) : ResponseEntity
+                .status(204)
+                .build();
+    }
+
+    @GetMapping("/minhas-pesquisas")
+    public ResponseEntity minhasPesquisas(@RequestParam Integer idRespondente){
+        List<Pesquisa> pesquisas = pesquisaService.pesquisaPorRespondente(idRespondente);
+        return !pesquisas.isEmpty() ? ResponseEntity.status(200).body(pesquisas) : ResponseEntity.status(204).build();
     }
 }

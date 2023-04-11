@@ -15,6 +15,13 @@ public class CadastroRespondenteDTO extends Respondente{
         super(id, genero, escolaridade, cpf);
     }
 
+    public CadastroRespondenteDTO(String nome, String cpf, String email, String senha){
+        super.setNome(nome);
+        super.setCpf(cpf);
+        super.setEmail(email);
+        super.setSenha(senha);
+    }
+
     public CadastroRespondenteDTO(String img, String nome, String senha, String email, String cep, String telefone, Long id, String genero, String escolaridade, String cpf) {
         super(img, nome, senha, email, cep, telefone, id, genero, escolaridade, cpf);
     }

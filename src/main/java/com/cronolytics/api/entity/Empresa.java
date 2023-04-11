@@ -1,5 +1,7 @@
 package com.cronolytics.api.entity;
 
+import com.cronolytics.api.dto.res.PerguntaSimplesDTO;
+import com.cronolytics.api.dto.res.SeguidoresDTO;
 import com.cronolytics.api.utils.enums.StatusAccount;
 
 import javax.persistence.*;
