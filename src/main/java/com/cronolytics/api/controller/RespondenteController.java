@@ -126,7 +126,7 @@ public class RespondenteController {
                 payload.getSenha()
         );
 
-        if (respondente == null) return ResponseEntity.status(404).build();
+        if (respondente.isEmpty()){ return ResponseEntity.status(404).build();}
 
         return ResponseEntity.status(200).body(respondente);
     }
