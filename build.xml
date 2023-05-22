@@ -10,18 +10,18 @@
 	
 	<target name="compile">
 		<mkdir dir="target/classes/"/>
-		<mkdir dir="target/classes-test/"/>
+		<mkdir dir="target/test-classes/"/>
 		<javac destdir="target/classes/" srcdir="src/main/java/" debug="true" encoding="UTF-8" />
-		<javac destdir="target/classes-test/" srcdir="src/test/java/" classpathref="tests.classpath" debug="true" encoding="UTF-8" />
+		<javac destdir="target/test-classes/" srcdir="src/test/java/" classpathref="tests.classpath" debug="true" encoding="UTF-8" />
 	</target>
 	
 	<target name="test" depends="compile">
 		<junit fork="yes" forkmode="once"  printsummary="true" showoutput="true" failureproperty="failed-test" haltonfailure="true" >
 			<formatter type="plain" usefile="false" />
-			<classpath location="target/classes-test/" />
+			<classpath location="target/test-classes/" />
 			<classpath refid="tests.classpath" />
 			<batchtest fork="yes" todir="${artifacts.dir}/reports">
-				<fileset dir="target/classes-test/" >
+				<fileset dir="target/test-classes/" >
 					<include name="**/*Test.class" />
 				</fileset>
 			</batchtest>
