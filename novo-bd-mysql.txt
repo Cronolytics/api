@@ -1,0 +1,141 @@
+CREATE database people_survey;
+USE people_survey;
+
+CREATE TABLE candidato (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    cep VARCHAR(255),
+    cpf VARCHAR(255),
+    data_nascimento DATE,
+    email VARCHAR(255),
+    estado_civil VARCHAR(255),
+    grau_de_ensino VARCHAR(255),
+    instituicao_de_ensino VARCHAR(255),
+    nome VARCHAR(255),
+    telefone VARCHAR(255),
+    vaga VARCHAR(255)
+);
+
+CREATE TABLE componente (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    multi_esc BIT,
+    nome VARCHAR(255)
+);
+
+CREATE TABLE conta_bancaria (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    agencia VARCHAR(255),
+    digito VARCHAR(255),
+    numero VARCHAR(255),
+    pix VARCHAR(255)
+);
+
+CREATE TABLE convidado (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255),
+    nome VARCHAR(255)
+);
+
+CREATE TABLE cupom (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    ativo BIT,
+    codigo VARCHAR(255),
+    percentual FLOAT,
+    validade DATE,
+    valor FLOAT
+);
+
+CREATE TABLE empresa (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    cep VARCHAR(255),
+    email VARCHAR(255),
+    img VARCHAR(255),
+    nome VARCHAR(255),
+    senha VARCHAR(255),
+    status_conta INTEGER,
+    telefone VARCHAR(255),
+    cnpj VARCHAR(255),
+    conta_bancaria_id BIGINT NULL,
+    FOREIGN KEY (conta_bancaria_id) REFERENCES conta_bancaria(id)
+);
+
+CREATE TABLE respondente (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    cep VARCHAR(255),
+    email VARCHAR(255),
+    img VARCHAR(255),
+    nome VARCHAR(255),
+    senha VARCHAR(255),
+    status_respondente INTEGER,
+    telefone VARCHAR(255),
+    cpf VARCHAR(255),
+    escolaridade VARCHAR(255),
+    genero VARCHAR(255)
+);
+
+
+CREATE TABLE pesquisa (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    descri VARCHAR(255),
+    encerrada BIT NOT NULL,
+    exploratoria BIT NOT NULL,
+    interna BIT NOT NULL,
+    nome VARCHAR(255),
+    participantes_alvo INTEGER,
+    empresa_id INT,
+    FOREIGN KEY (empresa_id) REFERENCES empresa(id)
+);
+
+CREATE TABLE pergunta (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    descri VARCHAR(255),
+    componente_id INT,
+    id_pesquisa INT,
+    FOREIGN KEY (componente_id) REFERENCES componente(id),
+    FOREIGN KEY (id_pesquisa) REFERENCES pesquisa(id)
+);
+
+
+
+
+CREATE TABLE resposta (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    descri VARCHAR(255),
+    id_pergunta INT,
+    FOREIGN KEY (id_pergunta) REFERENCES pergunta(id)
+);
+
+CREATE TABLE gabarito (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    convidado_id INT,
+    pesquisa_id INT,
+    respondente_id BIGINT,
+    FOREIGN KEY (convidado_id) REFERENCES convidado(id),
+    FOREIGN KEY (pesquisa_id) REFERENCES pesquisa(id),
+    FOREIGN KEY (respondente_id) REFERENCES respondente(id)
+);
+
+CREATE TABLE resposta_gabarito (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    descri VARCHAR(255),
+    ranking INTEGER,
+    pergunta_id INT,
+    resposta_id INT,
+    id_gabarito INT,
+    FOREIGN KEY (pergunta_id) REFERENCES pergunta(id),
+    FOREIGN KEY (resposta_id) REFERENCES resposta(id),
+    FOREIGN KEY (id_gabarito) REFERENCES gabarito(id)
+);
+
+CREATE TABLE seguidores(
+id INT PRIMARY KEY AUTO_INCREMENT,
+empresa_id INT,
+respondente_id BIGINT,
+FOREIGN KEY (empresa_id) REFERENCES empresa(id),
+FOREIGN KEY (respondente_id) REFERENCES respondente(id)
+);
+
+INSERT INTO componente VALUES (1,0,'radio');
+
+CREATE USER ‘guilherme’@’%’ IDENTIFIED BY ‘Gui1509’;
+
+GRANT ALL ON *.* TO 'guilherme'@'%' WITH GRANT OPTION;

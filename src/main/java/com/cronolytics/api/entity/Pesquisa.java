@@ -1,9 +1,12 @@
 package com.cronolytics.api.entity;
 
 import com.cronolytics.api.dto.res.PesquisaSimplesDTO;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import javax.validation.constraints.Null;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @NamedNativeQuery(name = "Pesquisa.PesquisaSimplesDTOByIdEmpresa",
@@ -47,6 +50,8 @@ public class Pesquisa {
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "id_pesquisa")
     private List<Pergunta> perguntas = new ArrayList<>();
+    @Nullable
+    private Date criadaEm;
 
     public Integer getId() {
         return id;
@@ -126,5 +131,21 @@ public class Pesquisa {
 
     public void setInterna(boolean interna) {
         this.interna = interna;
+    }
+
+    public String getDescri() {
+        return descri;
+    }
+
+    public void setDescri(String descri) {
+        this.descri = descri;
+    }
+
+    public Date getCriadaEm() {
+        return criadaEm;
+    }
+
+    public void setCriadaEm(Date criadaEm) {
+        this.criadaEm = criadaEm;
     }
 }

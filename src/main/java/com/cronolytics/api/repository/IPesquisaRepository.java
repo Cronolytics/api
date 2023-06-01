@@ -14,4 +14,5 @@ public interface IPesquisaRepository extends JpaRepository<Pesquisa,Integer> {
     List<Optional<PesquisaSimplesDTO>> PesquisaSimplesDTOByIdEmpresa(int idEmpresa);
     List<Optional<Pesquisa>> findAllByEncerradaFalse();
     List<Optional<Pesquisa>> findAllByEncerradaFalseAndInternaFalse();
+    List<Optional<Pesquisa>> findByEmpresaIdAndEncerradaFalse(int idEmpresa);
 }

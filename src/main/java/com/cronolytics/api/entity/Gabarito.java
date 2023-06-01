@@ -3,6 +3,7 @@ package com.cronolytics.api.entity;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -22,6 +23,9 @@ public class Gabarito {
     private List<RespostaGabarito> respostasGabarito;
     @ManyToOne
     private Pesquisa pesquisa;
+
+    @Nullable
+    private LocalDate criadoEm;
 
     public Integer getId() {
         return id;
@@ -61,5 +65,14 @@ public class Gabarito {
 
     public void setConvidado(@Nullable Convidado convidado) {
         this.convidado = convidado;
+    }
+
+    @Nullable
+    public LocalDate getCriadoEm() {
+        return criadoEm;
+    }
+
+    public void setCriadoEm(@Nullable LocalDate criadoEm) {
+        this.criadoEm = criadoEm;
     }
 }

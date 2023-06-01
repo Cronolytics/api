@@ -1,8 +1,10 @@
 package com.cronolytics.api.service.subject;
 
 import com.cronolytics.api.entity.Pesquisa;
+import com.cronolytics.api.repository.IGabaritoRepository;
 import com.cronolytics.api.service.observer.EmpresaObserver;
 import com.cronolytics.api.service.observer.RespondenteObserver;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,14 +13,14 @@ public class PesquisaSubject {
     private Pesquisa pesquisa;
     private List<EmpresaObserver> empresas;
     private List<RespondenteObserver> respondentes;
-    private Integer respostasTotais;
+    @Autowired
+    private IGabaritoRepository gabaritoRepository;
 
 
     public PesquisaSubject(Pesquisa pesquisa){
         this.pesquisa=pesquisa;
         this.empresas = new ArrayList<>();
         this.respondentes = new ArrayList<>();
-        this.respostasTotais=0;
     }
 
     public void adicionarEmpresa(EmpresaObserver novaEmpresa){
@@ -41,8 +43,7 @@ public class PesquisaSubject {
         }
     }
     public boolean adicionarRespostaEncerrar(){
-        respostasTotais++;
-        return respostasTotais == pesquisa.getParticipantesAlvo();
+        return gabaritoRepository.countGabaritoIdByPesquisaId(pesquisa.getId()).intValue() == pesquisa.getParticipantesAlvo();
     }
     public void removerTodos() {
         respondentes.clear();
@@ -61,10 +62,7 @@ public class PesquisaSubject {
     }
 
     public Integer getRespostasTotais() {
-        return respostasTotais;
+        return gabaritoRepository.countGabaritoIdByPesquisaId(pesquisa.getId()).intValue();
     }
 
-    public void setRespostasTotais(Integer respostasTotais) {
-        this.respostasTotais = respostasTotais;
-    }
 }

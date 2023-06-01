@@ -1,23 +1,30 @@
 package com.cronolytics.api.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import org.springframework.lang.Nullable;
+
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
-public abstract class Cupom {
+public class Cupom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String codigo;
     private LocalDate validade;
+    @Nullable
     private Double valor;
+    @Nullable
     private Double percentual;
     private Boolean ativo;
 
+    @OneToOne
+    private Gabarito gabarito;
+
     public Cupom() {
+        this.codigo = UUID.randomUUID().toString();
     }
 
     public Long getId() {
@@ -32,8 +39,8 @@ public abstract class Cupom {
         return codigo;
     }
 
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
+    public void setCodigo(UUID codigo) {
+        this.codigo = codigo.toString();
     }
 
     public LocalDate getValidade() {
@@ -52,19 +59,28 @@ public abstract class Cupom {
         this.valor = valor;
     }
 
-    public Double getPercent() {
-        return percentual;
-    }
-
-    public void setPercent(Double percent) {
-        this.percentual = percent;
-    }
-
     public Boolean getAtivo() {
         return ativo;
     }
 
     public void setAtivo(Boolean ativo) {
         this.ativo = ativo;
+    }
+
+    @Nullable
+    public Double getPercentual() {
+        return percentual;
+    }
+
+    public void setPercentual(@Nullable Double percentual) {
+        this.percentual = percentual;
+    }
+
+    public Gabarito getGabarito() {
+        return gabarito;
+    }
+
+    public void setGabarito(Gabarito gabarito) {
+        this.gabarito = gabarito;
     }
 }

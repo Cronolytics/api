@@ -2,6 +2,7 @@ package com.cronolytics.api.controller;
 
 import com.cronolytics.api.dto.req.CadastroRespondenteDTO;
 import com.cronolytics.api.dto.req.LoginDTO;
+import com.cronolytics.api.dto.req.SeguirDTO;
 import com.cronolytics.api.dto.req.SendMailDTO;
 import com.cronolytics.api.entity.Empresa;
 import com.cronolytics.api.entity.Pesquisa;
@@ -10,6 +11,7 @@ import com.cronolytics.api.entity.Seguidores;
 import com.cronolytics.api.repository.IEmpresaRepository;
 import com.cronolytics.api.repository.IPesquisaRepository;
 import com.cronolytics.api.repository.IRespondenteRepository;
+import com.cronolytics.api.repository.ISeguidoresRepository;
 import com.cronolytics.api.service.MailService;
 import com.cronolytics.api.service.PesquisaService;
 import com.cronolytics.api.utils.enums.FilaObj;
@@ -44,6 +46,9 @@ public class RespondenteController {
 
     @Autowired
     IPesquisaRepository pesquisaRepository;
+
+    @Autowired
+    ISeguidoresRepository seguidoresRepository;
 
     FilaObj<CadastroRespondenteDTO> filaRespondente = new FilaObj<>(10);
 
@@ -92,8 +97,8 @@ public class RespondenteController {
                         "<p>Atenciosamente, People Survey.</p>");
 
         try {
-            mailService.submit(email);
-            return ResponseEntity.status(201).build();
+            //mailService.submit(email);
+            return ResponseEntity.status(201).body(saved);
         } catch (Exception e) {
             return ResponseEntity
                     .status(500)
@@ -126,17 +131,31 @@ public class RespondenteController {
                 payload.getSenha()
         );
 
-        if (respondente == null) return ResponseEntity.status(404).build();
+        if (respondente.isEmpty())
+        {
+            return ResponseEntity.status(404).build();
+        }
 
         return ResponseEntity.status(200).body(respondente);
     }
 
     @PostMapping("/inscricao")
     public ResponseEntity inscricao(
-            @RequestBody Respondente respondente,
-            @RequestParam(required = true) @NotNull Integer idEmpresa){
-        Seguidores seguindo = pesquisaService.seguirEmpresa(respondente,idEmpresa);
-        return seguindo != null ? ResponseEntity.status(201).body(seguindo) : ResponseEntity.status(404).build();
+            @RequestParam Integer idRespondente, @RequestParam Integer idEmpresa){
+        if(!empresaRepository.existsById(idEmpresa)||!respondenteRepository.existsById(idRespondente.longValue())){
+            return ResponseEntity.status(404).build();
+        }
+        if (seguidoresRepository.existsByRespondenteIdAndEmpresaId(idRespondente.longValue(),idEmpresa)){
+            seguidoresRepository.deleteByRespondenteIdAndEmpresaId(idRespondente.longValue(),idEmpresa);
+            return ResponseEntity.status(200).build();
+        }
+        Empresa empresa = new Empresa();
+        Respondente respondente = new Respondente();
+        empresa.setId(idEmpresa);
+        respondente.setId(idRespondente.longValue());
+        Seguidores seguir = new Seguidores(respondente,empresa);
+        seguidoresRepository.save(seguir);
+        return ResponseEntity.status(201).body(seguir);
     }
 
     @GetMapping("/empresas-ativas")
@@ -164,7 +183,13 @@ public class RespondenteController {
 
     @GetMapping("/minhas-pesquisas")
     public ResponseEntity minhasPesquisas(@RequestParam Integer idRespondente){
-        List<Pesquisa> pesquisas = pesquisaService.pesquisaPorRespondente(idRespondente);
+        List<Pesquisa> pesquisas = new ArrayList<>();
+        Optional<List<Seguidores>> seguindo = seguidoresRepository.findByRespondenteId(idRespondente.longValue());
+        List<Empresa> empresas = new ArrayList<>();
+        seguindo.get().forEach((seguido) -> {empresas.add(empresaRepository.findById(seguido.getEmpresa().getId().intValue()).get());});
+        empresas.forEach((empresa) -> {List<Optional<Pesquisa>> pesquisasAtivas = pesquisaRepository.findByEmpresaIdAndEncerradaFalse(empresa.getId());
+        pesquisasAtivas.forEach((pesquisaAtiva) -> {pesquisas.add(pesquisaAtiva.get());});
+        });
         return !pesquisas.isEmpty() ? ResponseEntity.status(200).body(pesquisas) : ResponseEntity.status(204).build();
     }
 }

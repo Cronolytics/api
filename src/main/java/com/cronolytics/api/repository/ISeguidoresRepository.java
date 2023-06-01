@@ -16,4 +16,6 @@ public interface ISeguidoresRepository extends JpaRepository<Seguidores,Integer>
     @Transactional
     @Query(value = "delete from seguidores  where respondente_id=:idRespondente AND empresa_id=:idEmpresa",nativeQuery = true)
     void deleteByRespondenteIdAndEmpresaId (Long idRespondente,Integer idEmpresa);
+    boolean existsByRespondenteIdAndEmpresaId (Long idRespondente, Integer idEmpresa);
+    Optional<List<Seguidores>> findByRespondenteId(Long idRespondente);
 }

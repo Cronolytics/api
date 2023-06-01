@@ -32,6 +32,9 @@ public class PesquisaService {
     private IConvidadoRepository convidadoRepository;
     @Autowired
     private IGabaritoRepository gabaritoRepository;
+
+    @Autowired
+    private ICupomRepository cupomRepository;
     public Pesquisa salvar(Pesquisa pesquisa){
         Integer idEmpresa = pesquisa.getEmpresa().getId();
         List<Integer> empresasAtivas = new ArrayList<>();
@@ -71,62 +74,71 @@ public class PesquisaService {
         return null;
     }
 
-    public boolean responderPesquisa(Gabarito gabarito){
+    public Cupom responderPesquisa(Gabarito gabarito){
+        Cupom cupom = new Cupom();
         if (gabarito.getConvidado() == null){
             if (gabarito.getRespondente() == null){
-                return false;
+                return cupom;
             }
         }
-        if (getSubjectPorPesquisa(gabarito.getPesquisa()) == null){
-            return false;
-        }
+//        if (getSubjectPorPesquisa(gabarito.getPesquisa()) == null){
+//            return cupom;
+//        }
         if (gabarito.getConvidado() != null && gabarito.getRespondente() == null
             && getSubjectPorPesquisa(gabarito.getPesquisa()) != null){
             convidadoRepository.save(gabarito.getConvidado());
             if (!pesquisaRepository.existsById(gabarito.getPesquisa().getId())){
-                return false;
+                return cupom;
             }
             gabaritoRepository.save(gabarito);
             PesquisaSubject pesquisaRespondida = getSubjectPorPesquisa(gabarito.getPesquisa());
             if(pesquisaRespondida.adicionarRespostaEncerrar()){
                 encerrarPesquisa(gabarito.getPesquisa());
             }
-            return true;
+            return null;
         }
-        if (gabarito.getConvidado() == null && gabarito.getRespondente() != null
-                && getSubjectPorPesquisa(gabarito.getPesquisa()) != null){
+        if (gabarito.getConvidado() == null && gabarito.getRespondente() != null){
             if (!pesquisaRepository.existsById(gabarito.getPesquisa().getId())){
-                return false;
+                return cupom;
             }
             if (pesquisaRepository.findById(gabarito.getPesquisa().getId()).get().isInterna()){
-                return false;
+                return cupom;
             }
             if (pesquisaRepository.findById(gabarito.getPesquisa().getId()).get().getEncerrada()){
-                return false;
+                return cupom;
+            }
+            if (!seguidorRepository.existsByRespondenteIdAndEmpresaId(gabarito.getRespondente().getId(),
+                    pesquisaRepository.findById(gabarito.getPesquisa().getId()).get().getEmpresa().getId())){
+                return cupom;
             }
             gabaritoRepository.save(gabarito);
-            PesquisaSubject pesquisaRespondida = getSubjectPorPesquisa(gabarito.getPesquisa());
-            if(pesquisaRespondida.adicionarRespostaEncerrar()){
+            //PesquisaSubject pesquisaRespondida = getSubjectPorPesquisa(gabarito.getPesquisa());
+            if(pesquisaRepository.findById(gabarito.getPesquisa().getId()).get().getParticipantesAlvo() <= gabaritoRepository.countGabaritoIdByPesquisaId(gabarito.getPesquisa().getId()).intValue()){
                 encerrarPesquisa(gabarito.getPesquisa());
             }
-            return true;
+            cupom.setAtivo(true);
+            cupom.setValidade(gabarito.getCriadoEm().plusMonths(3));
+            cupom.setPercentual(15.0);
+            cupom.setGabarito(gabarito);
+            cupomRepository.save(cupom);
+            return cupom;
         }
         //if (gabarito.getRespondente() != null)
-        return false;
+        return cupom;
     }
     public void encerrarPesquisa(Pesquisa pesquisa){
-        PesquisaSubject pesquisaRespondida = getSubjectPorPesquisa(pesquisa);
-        pesquisaRespondida.getPesquisa().setEncerrada(true);
-        pesquisaRepository.save(pesquisaRespondida.getPesquisa());
-        pesquisaRespondida.removerTodosEmpresa();
-        pesquisaRespondida.removerTodos();
-        subjects.remove(pesquisaRespondida);
-        empresaSubjects.forEach((empresa) ->{
-                if(empresa.getIdEmpresa() == pesquisa.getEmpresa().getId()){
-                    empresa.encerrarPesquisa(pesquisa);
-                }
-            }
-        );
+        Optional<Pesquisa> pesquisaRespondida = pesquisaRepository.findById(pesquisa.getId());
+        pesquisaRespondida.get().setEncerrada(true);
+        pesquisaRepository.save(pesquisaRespondida.get());
+//        pesquisaRespondida.removerTodosEmpresa();
+//        pesquisaRespondida.removerTodos();
+//        subjects.remove(pesquisaRespondida);
+//        empresaSubjects.forEach((empresa) ->{
+//                if(empresa.getIdEmpresa() == pesquisa.getEmpresa().getId()){
+//                    empresa.encerrarPesquisa(pesquisa);
+//                }
+//            }
+//        );
     }
 
     public List<Pesquisa> pesquisaPorRespondente(Integer idRespondente){

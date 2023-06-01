@@ -3,6 +3,7 @@ package com.cronolytics.api.controller;
 import com.cronolytics.api.dto.res.MediaPesquisaDTO;
 import com.cronolytics.api.dto.res.PerguntaSimplesDTO;
 import com.cronolytics.api.dto.res.PesquisaSimplesDTO;
+import com.cronolytics.api.entity.Cupom;
 import com.cronolytics.api.entity.Gabarito;
 import com.cronolytics.api.entity.Pesquisa;
 import com.cronolytics.api.repository.*;
@@ -36,6 +37,8 @@ public class PesquisaController {
     @Autowired
     private IRespostasRepository respostasRepository;
 
+    @Autowired
+    private ISeguidoresRepository seguidoresRepository;
     @PostMapping("/gravar")
     public ResponseEntity<Pesquisa> salvarPesquisa(@RequestBody Pesquisa pesquisa){
         service.salvar(pesquisa);
@@ -44,9 +47,13 @@ public class PesquisaController {
 
     @PostMapping("/responder")
     public ResponseEntity responder(@RequestBody Gabarito gabarito){
-        return service.responderPesquisa(gabarito) ?
+        Cupom cupom = service.responderPesquisa(gabarito);
+        if(gabaritoRepository.existsByPesquisaIdAndRespondenteId(gabarito.getPesquisa().getId(),gabarito.getRespondente().getId().intValue())||!seguidoresRepository.existsByRespondenteIdAndEmpresaId(gabarito.getRespondente().getId(), pesquisaRepository.findById(gabarito.getPesquisa().getId()).get().getEmpresa().getId())){
+            return ResponseEntity.status(207).build();
+        }
+        return cupom == null ?
                 ResponseEntity.status(201).body(gabarito) :
-                ResponseEntity.status(404).build();
+                ResponseEntity.status(201).body(cupom);
     }
 
     @GetMapping
