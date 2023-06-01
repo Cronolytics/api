@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 CREATE database people_survey;
 USE people_survey;
 
@@ -41,7 +42,8 @@ CREATE TABLE cupom (
     codigo VARCHAR(255),
     percentual FLOAT,
     validade DATE,
-    valor FLOAT
+    valor FLOAT,
+    gabarito_id INT
 );
 
 CREATE TABLE empresa (
@@ -82,6 +84,7 @@ CREATE TABLE pesquisa (
     nome VARCHAR(255),
     participantes_alvo INTEGER,
     empresa_id INT,
+    criada_em DATE,
     FOREIGN KEY (empresa_id) REFERENCES empresa(id)
 );
 
@@ -109,6 +112,7 @@ CREATE TABLE gabarito (
     convidado_id INT,
     pesquisa_id INT,
     respondente_id BIGINT,
+    criado_em DATE,
     FOREIGN KEY (convidado_id) REFERENCES convidado(id),
     FOREIGN KEY (pesquisa_id) REFERENCES pesquisa(id),
     FOREIGN KEY (respondente_id) REFERENCES respondente(id)
@@ -139,3 +143,5 @@ INSERT INTO componente VALUES (1,0,'radio');
 CREATE USER ‘guilherme’@’%’ IDENTIFIED BY ‘Gui1509’;
 
 GRANT ALL ON *.* TO 'guilherme'@'%' WITH GRANT OPTION;
+
+ALTER TABLE cupom ADD FOREIGN KEY (gabarito_id) REFERENCES gabarito(id);
