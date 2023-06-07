@@ -192,6 +192,9 @@ public class RespondenteController {
 
     @GetMapping("/meus-cupons")
     public ResponseEntity meusCupons(@RequestParam Integer idRespondente){
+        if(!respondenteRepository.existsById(idRespondente.longValue())){
+            return ResponseEntity.status(404).build();
+        }
         List<Optional<Cupom>> cupons = cupomRepository.cupomPorIdRespondente(idRespondente.longValue());
         for (int i = 0; i < cupons.size() - 1; i++) {
             for (int j = 0; j < cupons.size() - 1; j++) {
