@@ -1,18 +1,21 @@
 package com.cronolytics.api.dto.res;
 
+import java.math.BigInteger;
+
 public class PesquisaDisponivelSimplesDTO {
     private String nomeEmpresa;
     private String nomePesquisa;
-    private Integer qtdDesconto;
     private Integer limiteRespostas;
-    private Integer qtdGabaritos;
+    private BigInteger qtdGabaritos;
 
-    public PesquisaDisponivelSimplesDTO(String nomeEmpresa, String nomePesquisa, Integer qtdDesconto, Integer limiteRespostas, Integer qtdGabaritos) {
+    public PesquisaDisponivelSimplesDTO(String nomeEmpresa, String nomePesquisa, Integer limiteRespostas, BigInteger qtdGabaritos) {
         this.nomeEmpresa = nomeEmpresa;
         this.nomePesquisa = nomePesquisa;
-        this.qtdDesconto = qtdDesconto;
         this.limiteRespostas = limiteRespostas;
         this.qtdGabaritos = qtdGabaritos;
+    }
+
+    public PesquisaDisponivelSimplesDTO() {
     }
 
     public String getNomeEmpresa() {
@@ -31,14 +34,6 @@ public class PesquisaDisponivelSimplesDTO {
         this.nomePesquisa = nomePesquisa;
     }
 
-    public Integer getQtdDesconto() {
-        return qtdDesconto;
-    }
-
-    public void setQtdDesconto(Integer qtdDesconto) {
-        this.qtdDesconto = qtdDesconto;
-    }
-
     public Integer getLimiteRespostas() {
         return limiteRespostas;
     }
@@ -47,11 +42,11 @@ public class PesquisaDisponivelSimplesDTO {
         this.limiteRespostas = limiteRespostas;
     }
 
-    public Integer getQtdGabaritos() {
+    public BigInteger getQtdGabaritos() {
         return qtdGabaritos;
     }
 
-    public void setQtdGabaritos(Integer qtdGabaritos) {
+    public void setQtdGabaritos(BigInteger qtdGabaritos) {
         this.qtdGabaritos = qtdGabaritos;
     }
 }

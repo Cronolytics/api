@@ -1,11 +1,41 @@
 package com.cronolytics.api.entity;
 
+import com.cronolytics.api.dto.res.CupomDTO;
+import com.cronolytics.api.dto.res.PesquisaMobileDetalhesDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.UUID;
 
+//@NamedNativeQuery(name = "Cupom.findByRespondenteId",
+//        query = "SELECT " +
+//                "cupom.id" +
+//                //" cupom.ativo," +
+//                //" cupom.codigo," +
+//                //" cupom.percentual," +
+//                //" cupom.validade," +
+//                //" cupom.valor" +
+//                " FROM cupom" +
+//                " JOIN gabarito" +
+//                " ON gabarito.id = cupom.gabarito_id" +
+//                " WHERE gabarito.respondente_id = :idRespondente",
+//        resultSetMapping = "com.cronolytics.api.dto.res.CupomDTO")
+//@SqlResultSetMapping(
+//        name = "com.cronolytics.api.dto.res.CupomDTO",
+//        classes = @ConstructorResult(
+//                targetClass = CupomDTO.class,
+//                columns = {
+//                        @ColumnResult(name = "id")
+//                        //@ColumnResult(name = "ativo"),
+//                        //@ColumnResult(name = "codigo"),
+//                        //@ColumnResult(name = "percentual"),
+//                        //@ColumnResult(name = "validade"),
+//                        //@ColumnResult(name = "valor")
+//                }
+//        )
+//)
 @Entity
 public class Cupom {
     @Id
@@ -76,8 +106,8 @@ public class Cupom {
         this.percentual = percentual;
     }
 
-    public Gabarito getGabarito() {
-        return gabarito;
+    public Integer getGabarito() {
+        return gabarito.getId();
     }
 
     public void setGabarito(Gabarito gabarito) {

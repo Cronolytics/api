@@ -1,5 +1,6 @@
 package com.cronolytics.api.repository;
 
+import com.cronolytics.api.dto.res.EmpresaSimplesDTO;
 import com.cronolytics.api.dto.res.PerguntaSimplesDTO;
 import com.cronolytics.api.dto.res.SeguidoresDTO;
 import com.cronolytics.api.entity.Empresa;
@@ -16,5 +17,8 @@ public interface IEmpresaRepository extends JpaRepository<Empresa, Integer> {
 
     boolean existsByEmailAndCnpj(String email, String cnpj);
 
-
+    @Query(nativeQuery = true)
+    List<Optional<EmpresaSimplesDTO>> EmpresaSimplesDTOByIdRespondente(int idRespondente);
+    @Query(value = "SELECT nome FROM empresa WHERE id = :idEmpresa", nativeQuery = true)
+    Optional<String> findNomeById(Integer idEmpresa);
 }

@@ -1,12 +1,34 @@
 package com.cronolytics.api.entity;
 
+import com.cronolytics.api.dto.res.EmpresaSimplesDTO;
 import com.cronolytics.api.dto.res.PerguntaSimplesDTO;
+import com.cronolytics.api.dto.res.PesquisaDisponivelSimplesDTO;
 import com.cronolytics.api.dto.res.SeguidoresDTO;
 import com.cronolytics.api.utils.enums.StatusAccount;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-
+@NamedNativeQuery(name = "Empresa.EmpresaSimplesDTOByIdRespondente",
+        query = "SELECT e.nome AS nome_empresa," +
+                "(SELECT COUNT(p.nome) " +
+                    "FROM pesquisa p " +
+                    "WHERE p.empresa_id = e.id AND interna = 0) AS qtd_pesq, " +
+                "(SELECT id " +
+                    "FROM seguidores " +
+                    "WHERE empresa_id = e.id AND respondente_id = :idRespondente) is null AS inscrito " +
+                "FROM empresa e",
+        resultSetMapping = "com.cronolytics.api.dto.res.EmpresaSimplesDTO")
+@SqlResultSetMapping(
+        name = "com.cronolytics.api.dto.res.EmpresaSimplesDTO",
+        classes = @ConstructorResult(
+                targetClass = EmpresaSimplesDTO.class,
+                columns = {
+                        @ColumnResult(name = "nome_empresa"),
+                        @ColumnResult(name = "qtd_pesq"),
+                        @ColumnResult(name = "inscrito")
+                }
+        )
+)
 @Entity
 public class Empresa extends Usuario {
     @Id

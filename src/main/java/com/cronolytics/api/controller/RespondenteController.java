@@ -4,14 +4,9 @@ import com.cronolytics.api.dto.req.CadastroRespondenteDTO;
 import com.cronolytics.api.dto.req.LoginDTO;
 import com.cronolytics.api.dto.req.SeguirDTO;
 import com.cronolytics.api.dto.req.SendMailDTO;
-import com.cronolytics.api.entity.Empresa;
-import com.cronolytics.api.entity.Pesquisa;
-import com.cronolytics.api.entity.Respondente;
-import com.cronolytics.api.entity.Seguidores;
-import com.cronolytics.api.repository.IEmpresaRepository;
-import com.cronolytics.api.repository.IPesquisaRepository;
-import com.cronolytics.api.repository.IRespondenteRepository;
-import com.cronolytics.api.repository.ISeguidoresRepository;
+import com.cronolytics.api.dto.res.*;
+import com.cronolytics.api.entity.*;
+import com.cronolytics.api.repository.*;
 import com.cronolytics.api.service.MailService;
 import com.cronolytics.api.service.PesquisaService;
 import com.cronolytics.api.utils.enums.FilaObj;
@@ -49,6 +44,12 @@ public class RespondenteController {
 
     @Autowired
     ISeguidoresRepository seguidoresRepository;
+
+    @Autowired
+    ICupomRepository cupomRepository;
+
+    @Autowired
+    IGabaritoRepository gabaritoRepository;
 
     FilaObj<CadastroRespondenteDTO> filaRespondente = new FilaObj<>(10);
 
@@ -159,37 +160,85 @@ public class RespondenteController {
     }
 
     @GetMapping("/empresas-ativas")
-    public ResponseEntity empresasAtivas(){
-        List<Empresa> empresas = empresaRepository.findAll();
+    public ResponseEntity empresasAtivas(@RequestParam Integer idRespondente){
+        List<Optional<EmpresaSimplesDTO>> empresas = empresaRepository.EmpresaSimplesDTOByIdRespondente(idRespondente.intValue());
         return !empresas.isEmpty() ? ResponseEntity.status(200).body(empresas) : ResponseEntity.status(204).build();
     }
 
     @GetMapping("/pesquisas-empresa")
     public ResponseEntity pesquisasExternas(@RequestParam(required = true) Integer idEmpresa){
-        List<Optional<Pesquisa>> pesquisas = pesquisaRepository.findAllByEncerradaFalseAndInternaFalse();
-        List<Optional<Pesquisa>> pesquisasEsp = new ArrayList<>();
-        pesquisas.forEach((pesquisa) -> {
-                if(pesquisa.get().getEmpresa().getId() == idEmpresa){
-                    pesquisasEsp.add(pesquisa);
-                }
-            }
-        );
-        return !pesquisasEsp.isEmpty() ? ResponseEntity
+        List<Optional<PesquisaMobileDetalhesDTO>> pesquisas = pesquisaRepository.PesquisaMobileDetalhesDTOByIdEmpresa(idEmpresa);
+        return !pesquisas.isEmpty() ? ResponseEntity
                 .status(200)
-                .body(pesquisasEsp) : ResponseEntity
+                .body(pesquisas) : ResponseEntity
                 .status(204)
                 .build();
     }
 
     @GetMapping("/minhas-pesquisas")
     public ResponseEntity minhasPesquisas(@RequestParam Integer idRespondente){
-        List<Pesquisa> pesquisas = new ArrayList<>();
-        Optional<List<Seguidores>> seguindo = seguidoresRepository.findByRespondenteId(idRespondente.longValue());
-        List<Empresa> empresas = new ArrayList<>();
-        seguindo.get().forEach((seguido) -> {empresas.add(empresaRepository.findById(seguido.getEmpresa().getId().intValue()).get());});
-        empresas.forEach((empresa) -> {List<Optional<Pesquisa>> pesquisasAtivas = pesquisaRepository.findByEmpresaIdAndEncerradaFalse(empresa.getId());
-        pesquisasAtivas.forEach((pesquisaAtiva) -> {pesquisas.add(pesquisaAtiva.get());});
-        });
-        return !pesquisas.isEmpty() ? ResponseEntity.status(200).body(pesquisas) : ResponseEntity.status(204).build();
+        List<Optional<Seguidores>> seguindo = seguidoresRepository.findByRespondenteId(idRespondente.longValue());
+        if(seguindo.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }
+        List<Integer> idsEmpresas = new ArrayList<>();
+        seguindo.forEach((segue) -> {idsEmpresas.add(segue.get().getEmpresa().getId());});
+        List<Optional<PesquisaDisponivelSimplesDTO>> pesquisas = pesquisaRepository.PesquisaDisponivelSimplesDTOByIdEmpresa(idsEmpresas);
+        if(pesquisas.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }
+        return ResponseEntity.status(200).body(pesquisas);
+    }
+
+    @GetMapping("/meus-cupons")
+    public ResponseEntity meusCupons(@RequestParam Integer idRespondente){
+        List<Optional<Cupom>> cupons = cupomRepository.cupomPorIdRespondente(idRespondente.longValue());
+        for (int i = 0; i < cupons.size() - 1; i++) {
+            for (int j = 0; j < cupons.size() - 1; j++) {
+                if (cupons.get(i).get().getId() == cupons.get(j).get().getId() && j != i) {
+                    cupons.remove(j);
+                }
+                for (int k = 0; k < cupons.size() - 1; k++) {
+                    if (cupons.get(j).get().getId() == cupons.get(k).get().getId() && k != j) {
+                        cupons.remove(k);
+                    }
+                    for (int l = cupons.size() - 1; l > 0; l--) {
+                        if (cupons.get(i).get().getId() == cupons.get(l).get().getId() && l != i) {
+                            cupons.remove(l);
+                        }
+                    }
+                }
+            }
+        }
+        return !cupons.isEmpty() ? ResponseEntity
+                .status(200)
+                .body(cupons) : ResponseEntity
+                .status(204)
+                .build();
+    }
+
+    @GetMapping("/empresa")
+    public ResponseEntity verEmpresa(@RequestParam Integer idEmpresa){
+        if(!empresaRepository.existsById(idEmpresa)){
+            return ResponseEntity.status(404).build();
+        }
+        EmpresaDetalhesDTO empresa = new EmpresaDetalhesDTO();
+        empresa.setNomeEmpresa(empresaRepository.findNomeById(idEmpresa).get());
+        empresa.setQtdInscritos(seguidoresRepository.countByEmpresaId(idEmpresa));
+        List<Optional<PesquisaMobileDetalhesDTO>> pesquisas = pesquisaRepository.PesquisaMobileDetalhesDTOByIdEmpresa(idEmpresa);
+        if(pesquisas.isEmpty()){
+            return ResponseEntity.status(200).body(empresa);
+        }
+        pesquisas.forEach((pesquisa) -> {empresa.getPesquisas().add(pesquisa.get());});
+        return ResponseEntity.status(200).body(empresa);
+    }
+
+    @PatchMapping("/invalidar-cupom")
+    public ResponseEntity invalidarCupom(@RequestParam Integer idCupom){
+        if(!cupomRepository.existsById(idCupom.longValue())){
+            return ResponseEntity.status(404).build();
+        }
+        cupomRepository.updateCupomById(idCupom.longValue());
+        return ResponseEntity.status(200).build();
     }
 }

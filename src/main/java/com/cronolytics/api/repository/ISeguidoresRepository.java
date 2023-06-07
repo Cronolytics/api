@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,5 +18,7 @@ public interface ISeguidoresRepository extends JpaRepository<Seguidores,Integer>
     @Query(value = "delete from seguidores  where respondente_id=:idRespondente AND empresa_id=:idEmpresa",nativeQuery = true)
     void deleteByRespondenteIdAndEmpresaId (Long idRespondente,Integer idEmpresa);
     boolean existsByRespondenteIdAndEmpresaId (Long idRespondente, Integer idEmpresa);
-    Optional<List<Seguidores>> findByRespondenteId(Long idRespondente);
+    List<Optional<Seguidores>> findByRespondenteId(Long idRespondente);
+
+    BigInteger countByEmpresaId(Integer idEmpresa);
 }

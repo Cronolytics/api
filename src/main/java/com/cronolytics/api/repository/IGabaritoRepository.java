@@ -8,5 +8,5 @@ import java.math.BigInteger;
 public interface IGabaritoRepository extends JpaRepository<Gabarito,Integer> {
     BigInteger countGabaritoIdByPesquisaId(int id);
 
-    boolean existsByPesquisaIdAndRespondenteId(int idPesquisa, Integer idRespondente);
+    boolean existsByPesquisaIdAndRespondenteId(int idPesquisa, Long idRespondente);
 }

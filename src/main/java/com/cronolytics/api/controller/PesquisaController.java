@@ -48,7 +48,7 @@ public class PesquisaController {
     @PostMapping("/responder")
     public ResponseEntity responder(@RequestBody Gabarito gabarito){
         Cupom cupom = service.responderPesquisa(gabarito);
-        if(gabaritoRepository.existsByPesquisaIdAndRespondenteId(gabarito.getPesquisa().getId(),gabarito.getRespondente().getId().intValue())||!seguidoresRepository.existsByRespondenteIdAndEmpresaId(gabarito.getRespondente().getId(), pesquisaRepository.findById(gabarito.getPesquisa().getId()).get().getEmpresa().getId())){
+        if(gabaritoRepository.existsByPesquisaIdAndRespondenteId(gabarito.getPesquisa().getId(),gabarito.getRespondente().getId().longValue())||!seguidoresRepository.existsByRespondenteIdAndEmpresaId(gabarito.getRespondente().getId().longValue(), pesquisaRepository.empresaByIdPesquisa(gabarito.getPesquisa().getId()))){
             return ResponseEntity.status(207).build();
         }
         return cupom == null ?
