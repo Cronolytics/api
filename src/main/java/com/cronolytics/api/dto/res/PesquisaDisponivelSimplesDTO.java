@@ -3,12 +3,14 @@ package com.cronolytics.api.dto.res;
 import java.math.BigInteger;
 
 public class PesquisaDisponivelSimplesDTO {
+    private Integer id;
     private String nomeEmpresa;
     private String nomePesquisa;
     private Integer limiteRespostas;
     private BigInteger qtdGabaritos;
 
-    public PesquisaDisponivelSimplesDTO(String nomeEmpresa, String nomePesquisa, Integer limiteRespostas, BigInteger qtdGabaritos) {
+    public PesquisaDisponivelSimplesDTO(Integer id,String nomeEmpresa, String nomePesquisa, Integer limiteRespostas, BigInteger qtdGabaritos) {
+        this.id = id;
         this.nomeEmpresa = nomeEmpresa;
         this.nomePesquisa = nomePesquisa;
         this.limiteRespostas = limiteRespostas;
@@ -16,6 +18,14 @@ public class PesquisaDisponivelSimplesDTO {
     }
 
     public PesquisaDisponivelSimplesDTO() {
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getNomeEmpresa() {
