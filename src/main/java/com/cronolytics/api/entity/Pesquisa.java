@@ -37,7 +37,7 @@ import java.util.List;
 )
 
 @NamedNativeQuery(name = "Pesquisa.PesquisaMobileDetalhesDTOByIdEmpresa",
-        query = "SELECT nome AS nome, " +
+        query = "SELECT p.id AS id, nome AS nome, " +
                 "criada_em AS criada, " +
                 "(SELECT COUNT(descri) " +
                     "FROM pergunta pe " +
@@ -49,6 +49,7 @@ import java.util.List;
         classes = @ConstructorResult(
                 targetClass = PesquisaMobileDetalhesDTO.class,
                 columns = {
+                        @ColumnResult(name = "id"),
                         @ColumnResult(name = "nome"),
                         @ColumnResult(name = "criada"),
                         @ColumnResult(name = "qtd_Perguntas"),

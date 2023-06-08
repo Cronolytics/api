@@ -3,11 +3,13 @@ package com.cronolytics.api.dto.res;
 import java.math.BigInteger;
 
 public class EmpresaSimplesDTO {
+    private Integer idEmpresa;
     private String nomeEmpresa;
     private BigInteger qtdPesq;
     private boolean inscrito;
 
-    public EmpresaSimplesDTO(String nomeEmpresa, BigInteger qtdPesq, BigInteger inscrito) {
+    public EmpresaSimplesDTO(Integer idEmpresa,String nomeEmpresa, BigInteger qtdPesq, BigInteger inscrito) {
+        this.idEmpresa = idEmpresa;
         this.nomeEmpresa = nomeEmpresa;
         this.qtdPesq = qtdPesq;
         this.inscrito = !Boolean.parseBoolean(inscrito.toString());
@@ -32,11 +34,19 @@ public class EmpresaSimplesDTO {
         this.qtdPesq = qtdPesq;
     }
 
-    public Boolean getInscrito() {
+    public Integer getIdEmpresa() {
+        return idEmpresa;
+    }
+
+    public void setIdEmpresa(Integer idEmpresa) {
+        this.idEmpresa = idEmpresa;
+    }
+
+    public boolean isInscrito() {
         return inscrito;
     }
 
-    public void setInscrito(Boolean inscrito) {
+    public void setInscrito(boolean inscrito) {
         this.inscrito = inscrito;
     }
 }

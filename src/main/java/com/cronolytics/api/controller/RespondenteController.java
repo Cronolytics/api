@@ -148,7 +148,8 @@ public class RespondenteController {
         }
         if (seguidoresRepository.existsByRespondenteIdAndEmpresaId(idRespondente.longValue(),idEmpresa)){
             seguidoresRepository.deleteByRespondenteIdAndEmpresaId(idRespondente.longValue(),idEmpresa);
-            return ResponseEntity.status(200).build();
+            SeguirDTO seguirDTO = new SeguirDTO();
+            return ResponseEntity.status(200).body(seguirDTO);
         }
         Empresa empresa = new Empresa();
         Respondente respondente = new Respondente();
@@ -156,12 +157,14 @@ public class RespondenteController {
         respondente.setId(idRespondente.longValue());
         Seguidores seguir = new Seguidores(respondente,empresa);
         seguidoresRepository.save(seguir);
-        return ResponseEntity.status(201).body(seguir);
+        SeguirDTO seguindo = new SeguirDTO(idRespondente,idEmpresa,empresaRepository.findNomeById(idEmpresa).get());
+        return ResponseEntity.status(201).body(seguindo);
     }
 
     @GetMapping("/empresas-ativas")
     public ResponseEntity empresasAtivas(@RequestParam Integer idRespondente){
         List<Optional<EmpresaSimplesDTO>> empresas = empresaRepository.EmpresaSimplesDTOByIdRespondente(idRespondente.intValue());
+        empresas.forEach((empresa) -> {empresa.get().setInscrito(seguidoresRepository.existsByRespondenteIdAndEmpresaId(idRespondente.longValue(), empresa.get().getIdEmpresa()));});
         return !empresas.isEmpty() ? ResponseEntity.status(200).body(empresas) : ResponseEntity.status(204).build();
     }
 

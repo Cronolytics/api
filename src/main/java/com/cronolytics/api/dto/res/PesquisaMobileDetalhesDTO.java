@@ -4,12 +4,15 @@ import java.math.BigInteger;
 import java.util.Date;
 
 public class PesquisaMobileDetalhesDTO {
+
+    private Integer id;
     private String nome;
     private Date criada;
     private BigInteger qtdPerguntas;
     private Boolean encerrada;
 
-    public PesquisaMobileDetalhesDTO(String nome, Date criada, BigInteger qtdPerguntas, Boolean encerrada) {
+    public PesquisaMobileDetalhesDTO(Integer id,String nome, Date criada, BigInteger qtdPerguntas, Boolean encerrada) {
+        this.id = id;
         this.nome = nome;
         this.criada = criada;
         this.qtdPerguntas = qtdPerguntas;
@@ -18,6 +21,14 @@ public class PesquisaMobileDetalhesDTO {
 
     public PesquisaMobileDetalhesDTO() {
 
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getNome() {
