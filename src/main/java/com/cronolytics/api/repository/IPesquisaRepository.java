@@ -24,4 +24,5 @@ public interface IPesquisaRepository extends JpaRepository<Pesquisa,Integer> {
     Integer empresaByIdPesquisa(Integer idPesquisa);
     List<Optional<Pesquisa>> findAllByEncerradaFalseAndInternaFalse();
     List<Optional<Pesquisa>> findByEmpresaIdAndEncerradaFalse(int idEmpresa);
+    boolean existsByIdAndEncerradaTrue(Integer idPesquisa);
 }
