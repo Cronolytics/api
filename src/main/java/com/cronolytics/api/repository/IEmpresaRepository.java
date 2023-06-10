@@ -21,4 +21,7 @@ public interface IEmpresaRepository extends JpaRepository<Empresa, Integer> {
     List<Optional<EmpresaSimplesDTO>> EmpresaSimplesDTOByIdRespondente(int idRespondente);
     @Query(value = "SELECT nome FROM empresa WHERE id = :idEmpresa", nativeQuery = true)
     Optional<String> findNomeById(Integer idEmpresa);
+
+    @Query(value = "SELECT e.nome FROM gabarito g JOIN pesquisa p ON g.pesquisa_id = p.id JOIN empresa e ON p.empresa_id = e.id WHERE g.id = :idGabarito", nativeQuery = true)
+    Optional<String> findNomeByGabaritoId(Integer idGabarito);
 }

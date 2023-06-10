@@ -145,3 +145,5 @@ CREATE USER ‘guilherme’@’%’ IDENTIFIED BY ‘Gui1509’;
 GRANT ALL ON *.* TO 'guilherme'@'%' WITH GRANT OPTION;
 
 ALTER TABLE cupom ADD FOREIGN KEY (gabarito_id) REFERENCES gabarito(id);
+
+ALTER TABLE cupom ADD COLUMN nome_empresa VARCHAR(45);

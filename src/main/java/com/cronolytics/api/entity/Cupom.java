@@ -53,6 +53,8 @@ public class Cupom {
     @OneToOne
     private Gabarito gabarito;
 
+    private String nomeEmpresa;
+
     public Cupom() {
         this.codigo = UUID.randomUUID().toString();
     }
@@ -112,5 +114,17 @@ public class Cupom {
 
     public void setGabarito(Gabarito gabarito) {
         this.gabarito = gabarito;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public String getNomeEmpresa() {
+        return nomeEmpresa;
+    }
+
+    public void setNomeEmpresa(String nomeEmpresa) {
+        this.nomeEmpresa = nomeEmpresa;
     }
 }

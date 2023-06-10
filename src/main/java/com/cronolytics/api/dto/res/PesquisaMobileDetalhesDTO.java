@@ -10,13 +10,15 @@ public class PesquisaMobileDetalhesDTO {
     private Date criada;
     private BigInteger qtdPerguntas;
     private Boolean encerrada;
+    private Boolean respondida;
 
-    public PesquisaMobileDetalhesDTO(Integer id,String nome, Date criada, BigInteger qtdPerguntas, Boolean encerrada) {
+    public PesquisaMobileDetalhesDTO(Integer id,String nome, Date criada, BigInteger qtdPerguntas, Boolean encerrada, String respondida) {
         this.id = id;
         this.nome = nome;
         this.criada = criada;
         this.qtdPerguntas = qtdPerguntas;
         this.encerrada = encerrada;
+        this.respondida = Boolean.parseBoolean(respondida);
     }
 
     public PesquisaMobileDetalhesDTO() {
@@ -61,5 +63,13 @@ public class PesquisaMobileDetalhesDTO {
 
     public void setEncerrada(Boolean encerrada) {
         this.encerrada = encerrada;
+    }
+
+    public Boolean getRespondida() {
+        return respondida;
+    }
+
+    public void setRespondida(Boolean respondida) {
+        this.respondida = respondida;
     }
 }

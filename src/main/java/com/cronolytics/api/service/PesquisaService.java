@@ -120,6 +120,7 @@ public class PesquisaService {
             cupom.setValidade(gabarito.getCriadoEm().plusMonths(3));
             cupom.setPercentual(15.0);
             cupom.setGabarito(gabarito);
+            cupom.setNomeEmpresa(empresaRepository.findNomeByGabaritoId(gabarito.getId()).get());
             cupomRepository.save(cupom);
             return cupom;
         }

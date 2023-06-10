@@ -15,10 +15,10 @@ public interface IPesquisaRepository extends JpaRepository<Pesquisa,Integer> {
     @Query(nativeQuery = true)
     List<Optional<PesquisaSimplesDTO>> PesquisaSimplesDTOByIdEmpresa(Integer idEmpresa);
     @Query(nativeQuery = true)
-    List<Optional<PesquisaMobileDetalhesDTO>> PesquisaMobileDetalhesDTOByIdEmpresa(int idEmpresa);
+    List<Optional<PesquisaMobileDetalhesDTO>> PesquisaMobileDetalhesDTOByIdEmpresa(int idEmpresa, int idRespondente);
 
     @Query(nativeQuery = true)
-    List<Optional<PesquisaDisponivelSimplesDTO>> PesquisaDisponivelSimplesDTOByIdEmpresa(List<Integer> idsEmpresas);
+    List<Optional<PesquisaDisponivelSimplesDTO>> PesquisaDisponivelSimplesDTOByIdEmpresa(List<Integer> idsEmpresas, Integer idRespondente);
     List<Optional<Pesquisa>> findAllByEncerradaFalse();
     @Query(value = "SELECT e.id FROM pesquisa p JOIN empresa e ON p.empresa_id = e.id WHERE p.id = :idPesquisa", nativeQuery = true)
     Integer empresaByIdPesquisa(Integer idPesquisa);

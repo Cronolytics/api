@@ -169,8 +169,9 @@ public class RespondenteController {
     }
 
     @GetMapping("/pesquisas-empresa")
-    public ResponseEntity pesquisasExternas(@RequestParam(required = true) Integer idEmpresa){
-        List<Optional<PesquisaMobileDetalhesDTO>> pesquisas = pesquisaRepository.PesquisaMobileDetalhesDTOByIdEmpresa(idEmpresa);
+    public ResponseEntity pesquisasExternas(@RequestParam(required = true) Integer idEmpresa, @RequestParam(required = true) Integer idRespondente){
+        List<Optional<PesquisaMobileDetalhesDTO>> pesquisas = pesquisaRepository.PesquisaMobileDetalhesDTOByIdEmpresa(idEmpresa,idRespondente);
+        pesquisas.forEach((pesquisa) -> {pesquisa.get().setRespondida(gabaritoRepository.existsByPesquisaIdAndRespondenteId(pesquisa.get().getId(),idRespondente.longValue()));});
         return !pesquisas.isEmpty() ? ResponseEntity
                 .status(200)
                 .body(pesquisas) : ResponseEntity
@@ -186,7 +187,7 @@ public class RespondenteController {
         }
         List<Integer> idsEmpresas = new ArrayList<>();
         seguindo.forEach((segue) -> {idsEmpresas.add(segue.get().getEmpresa().getId());});
-        List<Optional<PesquisaDisponivelSimplesDTO>> pesquisas = pesquisaRepository.PesquisaDisponivelSimplesDTOByIdEmpresa(idsEmpresas);
+        List<Optional<PesquisaDisponivelSimplesDTO>> pesquisas = pesquisaRepository.PesquisaDisponivelSimplesDTOByIdEmpresa(idsEmpresas, idRespondente);
         if(pesquisas.isEmpty()){
             return ResponseEntity.status(204).build();
         }
@@ -224,17 +225,18 @@ public class RespondenteController {
     }
 
     @GetMapping("/empresa")
-    public ResponseEntity verEmpresa(@RequestParam Integer idEmpresa){
+    public ResponseEntity verEmpresa(@RequestParam Integer idEmpresa, @RequestParam Integer idRespondente){
         if(!empresaRepository.existsById(idEmpresa)){
             return ResponseEntity.status(404).build();
         }
         EmpresaDetalhesDTO empresa = new EmpresaDetalhesDTO();
         empresa.setNomeEmpresa(empresaRepository.findNomeById(idEmpresa).get());
         empresa.setQtdInscritos(seguidoresRepository.countByEmpresaId(idEmpresa));
-        List<Optional<PesquisaMobileDetalhesDTO>> pesquisas = pesquisaRepository.PesquisaMobileDetalhesDTOByIdEmpresa(idEmpresa);
+        List<Optional<PesquisaMobileDetalhesDTO>> pesquisas = pesquisaRepository.PesquisaMobileDetalhesDTOByIdEmpresa(idEmpresa,idRespondente);
         if(pesquisas.isEmpty()){
             return ResponseEntity.status(200).body(empresa);
         }
+        pesquisas.forEach((pesquisa) -> {pesquisa.get().setRespondida(gabaritoRepository.existsByPesquisaIdAndRespondenteId(pesquisa.get().getId(),idRespondente.longValue()));});
         pesquisas.forEach((pesquisa) -> {empresa.getPesquisas().add(pesquisa.get());});
         return ResponseEntity.status(200).body(empresa);
     }

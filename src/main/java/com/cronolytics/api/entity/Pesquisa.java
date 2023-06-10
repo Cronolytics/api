@@ -37,12 +37,20 @@ import java.util.List;
 )
 
 @NamedNativeQuery(name = "Pesquisa.PesquisaMobileDetalhesDTOByIdEmpresa",
-        query = "SELECT p.id AS id, nome AS nome, " +
+        query = "SELECT p.id AS id, " +
+                "nome AS nome, " +
                 "criada_em AS criada, " +
                 "(SELECT COUNT(descri) " +
                     "FROM pergunta pe " +
-                        "WHERE id_pesquisa = p.id) " +
-                "AS qtd_perguntas, encerrada FROM pesquisa p WHERE empresa_id = :idEmpresa AND interna = 0",
+                    "WHERE id_pesquisa = p.id) " +
+                    "AS qtd_perguntas, encerrada, " +
+                "CAST(" +
+                    "(SELECT id " +
+                        "FROM gabarito g " +
+                        "WHERE g.pesquisa_id = p.id " +
+                        "AND g.respondente_id = :idRespondente) is not null AS CHAR(1)) AS respondido " +
+                "FROM pesquisa p " +
+                "WHERE empresa_id = :idEmpresa AND interna = 0\n",
         resultSetMapping = "com.cronolytics.api.dto.res.PesquisaMobileDetalhesDTO")
 @SqlResultSetMapping(
         name = "com.cronolytics.api.dto.res.PesquisaMobileDetalhesDTO",
@@ -53,24 +61,30 @@ import java.util.List;
                         @ColumnResult(name = "nome"),
                         @ColumnResult(name = "criada"),
                         @ColumnResult(name = "qtd_Perguntas"),
-                        @ColumnResult(name = "encerrada")
+                        @ColumnResult(name = "encerrada"),
+                        @ColumnResult(name = "respondido")
                 }
         )
 )
 
 @NamedNativeQuery(name = "Pesquisa.PesquisaDisponivelSimplesDTOByIdEmpresa",
-        query = "SELECT p.id AS id, e.nome AS nome_empresa," +
-                " p.nome AS pes_nome," +
-                " p.participantes_alvo AS limite_de_respostas," +
+        query = "SELECT p.id AS id,e.nome AS nome_empresa, " +
+                "p.nome AS pes_nome, " +
+                "p.participantes_alvo AS limite_de_respostas," +
                 "(SELECT COUNT(g.pesquisa_id) " +
                     "FROM gabarito g " +
                     "WHERE g.pesquisa_id = p.id) AS qtd_respostas " +
-                "FROM empresa e " +
-                "JOIN pesquisa p ON p.empresa_id = e.id " +
-                "WHERE e.id in (:idsEmpresas) " +
-                "AND p.encerrada = 0 " +
-                "AND p.interna = 0 " +
-                "ORDER BY p.criada_em DESC",
+                    "FROM empresa e JOIN pesquisa p ON p.empresa_id = e.id " +
+                    "WHERE e.id in (:idsEmpresas) " +
+                    "AND p.encerrada = 0 " +
+                    "AND p.interna = 0 " +
+                    "AND " +
+                        "(SELECT gb.id " +
+                        "FROM gabarito gb " +
+                        "JOIN respondente r " +
+                        "ON gb.respondente_id = r.id " +
+                        "WHERE gb.pesquisa_id = p.id " +
+                        "AND gb.respondente_id = :idRespondente) is null ORDER BY p.criada_em DESC",
         resultSetMapping = "com.cronolytics.api.dto.res.PesquisaDisponivelSimplesDTO")
 @SqlResultSetMapping(
         name = "com.cronolytics.api.dto.res.PesquisaDisponivelSimplesDTO",
