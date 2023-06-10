@@ -1,9 +1,6 @@
 package com.cronolytics.api.controller;
 
-import com.cronolytics.api.dto.req.CadastroRespondenteDTO;
-import com.cronolytics.api.dto.req.LoginDTO;
-import com.cronolytics.api.dto.req.SeguirDTO;
-import com.cronolytics.api.dto.req.SendMailDTO;
+import com.cronolytics.api.dto.req.*;
 import com.cronolytics.api.dto.res.*;
 import com.cronolytics.api.entity.*;
 import com.cronolytics.api.repository.*;
@@ -248,5 +245,24 @@ public class RespondenteController {
         }
         cupomRepository.updateCupomById(idCupom.longValue());
         return ResponseEntity.status(200).build();
+    }
+
+    @PatchMapping("/atualizar-cadastro")
+    public ResponseEntity atualizarCadastro(@RequestParam Integer idRespondente, @RequestBody AtualizarCadastroMobileDTO atualizar){
+        if(!respondenteRepository.existsById(idRespondente.longValue())){
+            return ResponseEntity.status(404).build();
+        }
+        Optional<Respondente> respondente = respondenteRepository.findById(idRespondente.longValue());
+        if (!atualizar.getEmail().isEmpty()){
+            respondente.get().setEmail(atualizar.getEmail());
+        }
+        if (!atualizar.getSenha().isEmpty()){
+            respondente.get().setSenha(atualizar.getSenha());
+        }
+        if(!atualizar.getTel().isEmpty()){
+            respondente.get().setTelefone(atualizar.getTel());
+        }
+        respondenteRepository.save(respondente.get());
+        return ResponseEntity.status(200).body(respondente);
     }
 }

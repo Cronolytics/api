@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.List;
 
 public interface ICupomRepository extends JpaRepository<Cupom,Long> {
-    @Query(value = "SELECT cupom.* FROM cupom INNER JOIN gabarito WHERE gabarito.respondente_id = :idRespondente AND cupom.ativo = 1",nativeQuery = true)
+    @Query(value = "SELECT cupom.* FROM cupom JOIN gabarito ON gabarito.id = cupom.gabarito_id WHERE gabarito.respondente_id = :idRespondente",nativeQuery = true)
     List<Optional<Cupom>> cupomPorIdRespondente(Long idRespondente);
     @Modifying
     @Transactional
