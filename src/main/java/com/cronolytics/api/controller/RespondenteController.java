@@ -265,4 +265,39 @@ public class RespondenteController {
         respondenteRepository.save(respondente.get());
         return ResponseEntity.status(200).body(respondente);
     }
+
+    @PostMapping("/inscricao-unitaria")
+    public ResponseEntity inscricaoUnitaria(
+            @RequestParam Integer idRespondente, @RequestParam Integer idEmpresa){
+        if(!empresaRepository.existsById(idEmpresa)||!respondenteRepository.existsById(idRespondente.longValue())){
+            return ResponseEntity.status(404).build();
+        }
+        if (seguidoresRepository.existsByRespondenteIdAndEmpresaId(idRespondente.longValue(),idEmpresa)){
+            //seguidoresRepository.deleteByRespondenteIdAndEmpresaId(idRespondente.longValue(),idEmpresa);
+            SeguirDTO seguirDTO = new SeguirDTO();
+            return ResponseEntity.status(207).body(seguirDTO);
+        }
+        Empresa empresa = new Empresa();
+        Respondente respondente = new Respondente();
+        empresa.setId(idEmpresa);
+        respondente.setId(idRespondente.longValue());
+        Seguidores seguir = new Seguidores(respondente,empresa);
+        seguidoresRepository.save(seguir);
+        SeguirDTO seguindo = new SeguirDTO(idRespondente,idEmpresa,empresaRepository.findNomeById(idEmpresa).get());
+        return ResponseEntity.status(201).body(seguindo);
+    }
+
+    @PostMapping("/desinscricao-unitaria")
+    public ResponseEntity desinscricaoUnitaria(
+            @RequestParam Integer idRespondente, @RequestParam Integer idEmpresa){
+        if(!empresaRepository.existsById(idEmpresa)||!respondenteRepository.existsById(idRespondente.longValue())){
+            return ResponseEntity.status(404).build();
+        }
+        if (seguidoresRepository.existsByRespondenteIdAndEmpresaId(idRespondente.longValue(),idEmpresa)){
+            seguidoresRepository.deleteByRespondenteIdAndEmpresaId(idRespondente.longValue(),idEmpresa);
+            SeguirDTO seguirDTO = new SeguirDTO();
+            return ResponseEntity.status(200).body(seguirDTO);
+        }
+        return ResponseEntity.status(404).build();
+    }
 }
