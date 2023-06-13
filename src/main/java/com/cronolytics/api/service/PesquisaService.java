@@ -1,6 +1,7 @@
 package com.cronolytics.api.service;
 
 import com.cronolytics.api.entity.*;
+import com.cronolytics.api.exceptions.NaoRespondenteException;
 import com.cronolytics.api.repository.*;
 import com.cronolytics.api.service.observer.RespondenteObserver;
 import com.cronolytics.api.service.subject.EmpresaSubject;
@@ -76,6 +77,9 @@ public class PesquisaService {
 
     public Cupom responderPesquisa(Gabarito gabarito){
         Cupom cupom = new Cupom();
+        Gabarito gabaritoVazio = new Gabarito();
+        gabaritoVazio.setId(0);
+        cupom.setGabarito(gabaritoVazio);
         if (gabarito.getConvidado() == null){
             if (gabarito.getRespondente() == null){
                 return cupom;
@@ -91,11 +95,10 @@ public class PesquisaService {
                 return cupom;
             }
             gabaritoRepository.save(gabarito);
-            PesquisaSubject pesquisaRespondida = getSubjectPorPesquisa(gabarito.getPesquisa());
-            if(pesquisaRespondida.adicionarRespostaEncerrar()){
+            if(pesquisaRepository.findById(gabarito.getPesquisa().getId()).get().getParticipantesAlvo() <= gabaritoRepository.countGabaritoIdByPesquisaId(gabarito.getPesquisa().getId()).intValue()){
                 encerrarPesquisa(gabarito.getPesquisa());
             }
-            return null;
+            return cupom;
         }
         if (gabarito.getConvidado() == null && gabarito.getRespondente() != null){
             if (!pesquisaRepository.existsById(gabarito.getPesquisa().getId())){
