@@ -88,8 +88,7 @@ public class PesquisaService {
 //        if (getSubjectPorPesquisa(gabarito.getPesquisa()) == null){
 //            return cupom;
 //        }
-        if (gabarito.getConvidado() != null && gabarito.getRespondente() == null
-            && getSubjectPorPesquisa(gabarito.getPesquisa()) != null){
+        if (gabarito.getConvidado() != null && gabarito.getRespondente() == null){
             convidadoRepository.save(gabarito.getConvidado());
             if (!pesquisaRepository.existsById(gabarito.getPesquisa().getId())){
                 return cupom;
